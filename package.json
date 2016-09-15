@@ -33,5 +33,9 @@
       "version": "",
       "locator": "ios"
     }
-  ]
+  ],
+  "scripts":{
+    "setup": "npm install && bower install && tsd install",
+    "clean": "rm -rf ./node_modules ./platforms ./www/lib ./www/typings && npm clean cache"
+  }
 }
