@@ -7,44 +7,40 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var typescript = require('gulp-tsc');
-
 var paths = {
-  sass: ['./www/scss/**/*.scss'],
-  typescript: ['./www/scripts/**/*.ts']
+  sass: ['./scss/**/*.scss'],
+  src: ['./src/*.ts']
 };
 
-gulp.task('default', ['sass', 'compile']);
+gulp.task('default', ['sass']);
+
+gulp.task('compile', function() {
+  gulp.src(paths.src)
+    .pipe(typescript({
+      emitError: false
+    }))
+    .pipe(gulp.dest('www/js/'))
+})
 
 gulp.task('sass', function(done) {
-  gulp.src('./www/scss/ionic.app.scss')
-    .pipe(sass())
-    .on('error', sass.logError)
+  gulp.src('./scss/ionic.app.scss')
+    .pipe(sass({
+      errLogToConsole: true
+    }))
     .pipe(gulp.dest('./www/css/'))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
+    .pipe(rename({
+      extname: '.min.css'
+    }))
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
 
-function compileTypeScript(done){
-  gulp.src(paths.typescript)
-  .pipe(typescript({sourcemap: true, out: 'tslib.js', sourceRoot: '../scripts'}))
-  .pipe(gulp.dest('./www/js/'))
-  .on('end', done);
-}
-
-gulp.task('compile', compileTypeScript);
-
-gulp.task('watch', function(){
-    compileTypeScript();
-    gulp.watch(path.sass, ['sass']);
-    gulp.watch(path.typescript, ['typescript']);
-});
-
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.src, ['compile']);
 });
 
 gulp.task('install', ['git-check'], function() {

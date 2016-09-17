@@ -1,8 +1,8 @@
 {
   "name": "RoomEASE",
-  "app_id": "",
+  "app_id": "homease",
   "watchPatterns": [
-    "www/js/*",
+    "www/*",
     "!www/css/**/*"
   ]
 }
