@@ -1,6 +1,6 @@
+/// <reference path="../../typings/tsd.d.ts" />
 
-/// <reference path="../typings/tsd.d.ts" />
-angular.module('starter.services', [])
+angular.module('app.services', [])
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array

@@ -4,7 +4,7 @@
   "description": "ionic-typescript: An Ionic project",
   "scripts":{
     "setup": "sudo npm install -g ionic cordova tsd bower && npm install && tsd install && bower install"
-  }
+  },
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",

@@ -1,5 +1,9 @@
 /// <reference path="../typings/tsd.d.ts" />
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+/// <reference path="controllers/controllers.ts" />
+/// <reference path="services/services.ts" />
+
+
+angular.module('app', ['ionic', 'app.controllers', 'app.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,6 +29,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+  .state('login', {
+  url: '/',
+  templateUrl: 'templates/login.html'
+})
+
+
   // setup an abstract state for the tabs directive
     .state('tab', {
     url: '/tab',
@@ -34,46 +44,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.roomies', {
+    url: '/roomies',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl as dash'
+      'tab-roomies': {
+        templateUrl: 'templates/tab-roomies.html',
+        controller: 'RoomiesCtrl as roomies'
       }
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  .state('tab.housing', {
+      url: '/housing',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl as chats'
+        'tab-housing': {
+          templateUrl: 'templates/tab-housing.html',
+          controller: 'HousingCtrl as housing'
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+    .state('tab.money', {
+      url: '/money',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl as chat'
+        'tab-money': {
+          templateUrl: 'templates/tab-money.html',
+          controller: 'MoneyCtrl as money'
         }
       }
     })
 
-  .state('tab.account', {
-    url: '/account',
+  .state('tab.info', {
+    url: '/info',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl as account'
+      'tab-info': {
+        templateUrl: 'templates/tab-info.html',
+        controller: 'InfoCtrl as info'
       }
     }
   });
 
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
-
+  $urlRouterProvider.otherwise('/');
 });

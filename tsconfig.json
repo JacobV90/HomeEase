@@ -4,11 +4,20 @@
     "allowNonTsExtensions": true,
     "module": "commonjs",
     "sourceMap": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmitOnError": false,
     "rootDir": ".",
+    "outDir": "www",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "inlineSources": true
   },
-  "compileOnSave": true
+  "compileOnSave": true,
+  "filesGlob": [
+   "**/*.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
