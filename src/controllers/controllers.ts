@@ -23,7 +23,4 @@ angular.module('app.controllers', [])
 this.settings = {
   enableFriends: true
   };
-})
-.controller('LoginCtrl', function() {
-  alert("fuck");
 });

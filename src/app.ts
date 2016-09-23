@@ -49,7 +49,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
     views: {
       'tab-roomies': {
         templateUrl: 'templates/tab-roomies.html',
-        controller: 'RoomiesCtrl as roomies'
+        controller: 'RoomiesCtrl'
       }
     }
   })
@@ -59,10 +59,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
       views: {
         'tab-housing': {
           templateUrl: 'templates/tab-housing.html',
-          controller: 'HousingCtrl as housing'
+          controller: 'HousingCtrl'
         }
       }
     })
+    
     .state('tab.money', {
       url: '/money',
       views: {
@@ -78,7 +79,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
     views: {
       'tab-info': {
         templateUrl: 'templates/tab-info.html',
-        controller: 'InfoCtrl as info'
+        controller: 'InfoCtrl'
       }
     }
   });
