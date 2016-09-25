@@ -1,11 +1,10 @@
 /// <reference path="../typings/tsd.d.ts" />
 /// <reference path="controllers/controllers.ts" />
-/// <reference path="services/services.ts" />
 
 
-angular.module('app', ['ionic', 'app.controllers', 'app.services'])
+angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, ngFB) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +18,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
       window.StatusBar.styleLightContent();
     }
   });
+
+  ngFB.init({appId: '1383432301671180'});
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -30,8 +31,9 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
   $stateProvider
 
   .state('login', {
-  url: '/',
-  templateUrl: 'templates/login.html'
+  url: '/login',
+  templateUrl: 'templates/login.html',
+  controller: 'LoginCtrl'
 })
 
 
@@ -63,7 +65,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
         }
       }
     })
-    
+
     .state('tab.money', {
       url: '/money',
       views: {
@@ -84,5 +86,5 @@ angular.module('app', ['ionic', 'app.controllers', 'app.services'])
     }
   });
 
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/login');
 });
