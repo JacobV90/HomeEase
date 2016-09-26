@@ -36,5 +36,5 @@ this.settings = {
         });
     };
 
-    $scope.image_src = '../../img/home_ease.png';
+    $scope.image_src = 'img/homeas.jpg';
 });
