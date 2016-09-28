@@ -25,8 +25,13 @@
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
-        "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.ionicframework.starter"
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "1383432301671180",
+            "APP_NAME": "HomeEase - Test1",
+            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
         }
     },
     "dependent_plugins": {}

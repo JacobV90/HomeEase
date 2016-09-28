@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-angular.module('app.controllers', [ 'ngOpenFB'])
+angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, $ionicLoading) {
     $ionicLoading
@@ -22,19 +22,26 @@ this.settings = {
   };
 })
 
-.controller('LoginCtrl', function ($scope, $ionicModal, $state, $timeout, ngFB) {
+.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform, ngFB, $cordovaFacebook) {
   $scope.fbLogin = function () {
-    ngFB.login({scope: 'email,publish_actions'}).then(
-        function (response) {
-            if (response.status === 'connected') {
-                console.log('Facebook login succeeded');
-                //$scope.closeLogin();
-                $state.go('tab.roomies');
-            } else {
-                alert('Facebook login failed');
-            }
-        });
-    };
 
+    $log.log("fblogin called");
+    $cordovaFacebook.getLoginStatus();
+
+    $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+    .then(function(success) {
+      // { id: "634565435",
+      //   lastName: "bob"
+      //   ...
+      // }
+      $state.go('tab.roomies');
+    }, function (error) {
+      $log.log("fuck my life");
+    });
     $scope.image_src = 'img/homeas.jpg';
+  };
+
+  $scope.gotoMain = function() {
+    $state.go("tab.roomies");
+  }
 });

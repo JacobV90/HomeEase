@@ -2,14 +2,16 @@
   "name": "ionic-typescript",
   "version": "1.0.0",
   "description": "ionic-typescript: An Ionic project",
-  "scripts":{
+  "scripts": {
     "setup": "sudo npm install -g ionic cordova tsd bower && npm install && tsd install && bower install"
   },
   "dependencies": {
+    "frow": "^1.1.1",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0"
+    "gulp-rename": "^1.2.0",
+    "ionic-native": "^2.0.3"
   },
   "devDependencies": {
     "bower": "^1.3.3",

@@ -2,7 +2,7 @@
 /// <reference path="controllers/controllers.ts" />
 
 
-angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB'])
+angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB', 'ngCordova'])
 
 .run(function($ionicPlatform, ngFB) {
   $ionicPlatform.ready(function() {
@@ -17,12 +17,28 @@ angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB'])
       // org.apache.cordova.statusbar required
       window.StatusBar.styleLightContent();
     }
+    /*var id = "1383432301671180";
+    var version = "v2.7"; // or leave blank and default is v2.0
+
+    ngFB.init({appId: id});*/
+
   });
 
-  ngFB.init({appId: '1383432301671180'});
+  //ngFB.init({appId: '1383432301671180'});
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$httpProvider, $cordovaFacebookProvider) {
+
+  var id = '1383432301671180';
+  var version = "v2.7"; // or leave blank and default is v2.0
+
+ionic.Platform.ready(function () {
+  if (window.cordova.platformId == "browser") {
+      $cordovaFacebookProvider.browserInit(id, version);
+      // version is optional. It refers to the version of API you may want to use.
+  }
+});
+
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router

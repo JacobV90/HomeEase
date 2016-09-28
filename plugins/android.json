@@ -8,25 +8,30 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
-        },
-        "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "1387419224605821",
+            "APP_NAME": "HomeEase - Android",
+            "PACKAGE_NAME": "com.homeease.life"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.homeease.life"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.ionictypescript491552"
+            "PACKAGE_NAME": "com.homeease.life"
         }
     },
     "dependent_plugins": {}

@@ -7,23 +7,37 @@
 
     <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="cordova.js"></script>
+
     <script src="js/openfb.js"></script>
     <script src="js/ngopenfb.js"></script>
+   <script src="http://connect.facebook.net/en_US/sdk.js"></script>
+
+
+
 
     <!-- your app's js -->
     <script src="src/app.js"></script>
     <script src="src/controllers/controllers.js"></script>
 
   </head>
-  <body ng-app="app" >
+  <body>
+    <div id="fb-root"></div>
+    <div ng-app="app">
+
+
 
     <ion-nav-view></ion-nav-view>
+
+  </div>
+  <script src="facebookConnectPlugin.js"></script>
+
   </body>
 </html>

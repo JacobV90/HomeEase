@@ -6,6 +6,7 @@
     "angular-facebook": "^0.2.3"
   },
   "dependencies": {
-    "angular-facebook": "^0.2.3"
+    "angular-facebook": "^0.2.3",
+    "ngCordova": "^0.1.27-alpha"
   }
 }

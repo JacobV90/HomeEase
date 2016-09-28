@@ -1,17 +1,27 @@
 <ion-view view-title="Login" >
   <ion-content>
-  <div >
     <div class = 'background'>
-      <img ng-src="{{image_src}}" height="100%" width="100%"/>
-    </div>
-    <div class="row responsive-sm">
-      <div class="col padding">
-        <button type="button" class="button button-full button-positive" ng-click="fbLogin()" >
-          Login with Facebook
-        </button>
+    <div class = "frow centered">
+      <div class="button-container">
+      <div class="frow justify-around">
+        <div  ng-click="fbLogin()">
+          <img ng-src='../img/facebook_logo.png' class = 'facebook' />
+        </div>
+        <div ng-click="gotoMain()">
+          <img ng-src='../img/home.png' class = 'facebook' />
+        </div>
+      </div>
+    <div class="frow justify-around">
+      <div >
+        <img ng-src='../img/facebook_logo.png' class = 'facebook'/>
+      </div>
+      <div  >
+        <img ng-src='../img/facebook_logo.png' class = 'facebook'/>
       </div>
     </div>
   </div>
+</div>
+</div>
 </ion-content>
 
 </ion-view>

@@ -47,12 +47,23 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-crosswalk-webview": {
+    "cordova-plugin-inappbrowser": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview@2.1.0"
+            "id": "cordova-plugin-inappbrowser@~1.5.0"
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-facebook4": {
+        "source": {
+            "type": "local",
+            "path": "/Users/jacobveal/Desktop/cordova-plugin-facebook4"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "1387419224605821",
+            "APP_NAME": "HomeEase - Android"
+        }
     }
 }
