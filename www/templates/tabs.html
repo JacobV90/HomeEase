@@ -4,31 +4,73 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 
-<ion-nav-bar class="bar-stable">
-  <ion-nav-back-button>
-  </ion-nav-back-button>
-</ion-nav-bar>
 
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
+<ion-side-menus>
+  <!-- Left menu -->
+  <ion-side-menu side="left">
+    <div class="list card">
 
-  <!-- Dashboard Tab -->
-  <ion-tab title="Roomates" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/roomies">
-    <ion-nav-view name="tab-roomies"></ion-nav-view>
-  </ion-tab>
+      <div class="item item-avatar">
+        <img src="mcfly.jpg">
+        <h2>Marty McFly</h2>
+        <p>November 05, 1955</p>
+      </div>
 
-  <!-- Chats Tab -->
-  <ion-tab title="Housing" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/housing">
-    <ion-nav-view name="tab-housing"></ion-nav-view>
-  </ion-tab>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-ios-telephone"></i>
+        Home
+      </a>
 
-  <!-- Account Tab -->
-  <ion-tab title="Money" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/money">
-    <ion-nav-view name="tab-money"></ion-nav-view>
-  </ion-tab>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-wifi"></i>
+        Roomates
+      </a>
 
-  <ion-tab title="Info" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/info">
-    <ion-nav-view name="tab-info"></ion-nav-view>
-  </ion-tab>
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-card"></i>
+        Card information
+      </a>
+
+      <a href="#" class="item item-icon-left">
+        <i class="icon ion-home"></i>
+        Documents
+      </a>
+
+    </div>
 
 
-</ion-tabs>
+  </ion-side-menu>
+
+  <ion-side-menu-content>
+
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-tabs class="tabs-icon-top tabs-color-active-positive">
+
+      <!-- Dashboard Tab -->
+      <ion-tab title="Roomates" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/roomies">
+        <ion-nav-view name="tab-roomies"></ion-nav-view>
+      </ion-tab>
+
+      <!-- Chats Tab -->
+      <ion-tab title="Housing" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/housing">
+        <ion-nav-view name="tab-housing"></ion-nav-view>
+      </ion-tab>
+
+      <!-- Account Tab -->
+      <ion-tab title="Money" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/money">
+        <ion-nav-view name="tab-money"></ion-nav-view>
+      </ion-tab>
+
+      <ion-tab title="Info" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/info">
+        <ion-nav-view name="tab-info"></ion-nav-view>
+      </ion-tab>
+
+
+    </ion-tabs>
+  </ion-side-menu-content>
+
+</ion-side-menus>

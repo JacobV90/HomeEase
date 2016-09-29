@@ -22,6 +22,12 @@ this.settings = {
   };
 })
 
+.controller('SideMenu', function($scope, $ionicSideMenuDelegate) {
+  $scope.toggleLeft = function() {
+      $ionicSideMenuDelegate.toggleLeft();
+    };
+})
+
 .controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform, ngFB, $cordovaFacebook) {
   $scope.fbLogin = function () {
 
