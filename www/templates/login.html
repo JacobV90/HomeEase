@@ -1,27 +1,36 @@
 <ion-view view-title="Login" >
   <ion-content>
     <div class = 'background'>
-    <div class = "frow centered">
-      <div class="button-container">
-      <div class="frow justify-around">
-        <div  ng-click="fbLogin()">
-          <img ng-src='../img/facebook_logo.png' class = 'facebook' />
-        </div>
-        <div ng-click="gotoMain()">
-          <img ng-src='../img/home.png' class = 'facebook' />
-        </div>
+      <div class = "title-container">
+        <h2>Home Ease</h2>
       </div>
-    <div class="frow justify-around">
+    <div class = "frow centered-column">
       <div >
-        <img ng-src='../img/facebook_logo.png' class = 'facebook'/>
+          <div class="frow btn-holder">
+          <button class="button button-positive btn" ng-click="fbLogin()">
+             <i class="icon facebook-logo"></i>
+             Login with facebook
+           </button>
+        </div>
+        <div class="frow btn-holder">
+        <button class="button btn" >
+           <i class="icon linkedin-logo"></i>
+         </button>
       </div>
-      <div  >
-        <img ng-src='../img/facebook_logo.png' class = 'facebook'/>
-      </div>
+      <div class="frow btn-holder">
+        <button class="button button-energized btn" ng-click="gotoMain()">
+           <i class="icon ion-email"></i>
+           Login with email
+         </button>
     </div>
+    <div class="frow btn-holder">
+    <button class="button button-balanced btn">
+       <i class="icon ion-home"></i>
+       Login as a owner
+     </button>
+   </div>
+  </div>
   </div>
 </div>
-</div>
 </ion-content>
-
 </ion-view>
