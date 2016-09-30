@@ -17,18 +17,30 @@
            <i class="icon linkedin-logo"></i>
          </button>
       </div>
-      <div class="frow btn-holder">
-        <button class="button button-energized btn" ng-click="gotoMain()">
-           <i class="icon ion-email"></i>
-           Login with email
-         </button>
-    </div>
-    <div class="frow btn-holder">
-    <button class="button button-balanced btn">
-       <i class="icon ion-home"></i>
-       Login as a owner
-     </button>
-   </div>
+      <div class="frow">
+        <div class="list">
+          <label class="item item-input">
+            <span class="input-label">Username</span>
+            <input type="text">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Password</span>
+            <input type="password">
+          </label>
+        </div>
+        <div class="frow justify-between">
+        <div class="col-xs-1-2">
+            <button class="button button-balanced login-btn " ng-click="gotoMain()">
+              Login
+            </button>
+       </div>
+       <div class="col-xs-1-2">
+         <button class="button button-positive login-btn">
+            Sign-up
+          </button>
+        </div>
+        </div>
+      </div>
   </div>
   </div>
 </div>
