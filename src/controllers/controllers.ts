@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
+angular.module('app.controllers', [ 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, $ionicLoading) {
     $ionicLoading
@@ -54,7 +54,7 @@ this.settings = {
   };
 })
 
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform, ngFB, $cordovaFacebook) {
+.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform,  $cordovaFacebook) {
   $scope.fbLogin = function () {
 
     $log.log("fblogin called");

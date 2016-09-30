@@ -2,9 +2,9 @@
 /// <reference path="controllers/controllers.ts" />
 
 
-angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB', 'ngCordova'])
+angular.module('app', ['ionic', 'app.controllers', 'ngCordova'])
 
-.run(function($ionicPlatform, ngFB) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
