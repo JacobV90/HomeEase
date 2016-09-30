@@ -44,6 +44,18 @@ angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB', 'ngCordova'])
   controller: 'LoginCtrl'
 })
 
+.state('roomie_payment', {
+url: '/roomie_payment',
+templateUrl: 'templates/roomie_payment.html',
+controller: 'PaymentCtrl'
+})
+
+.state('rent_payment', {
+url: '/rent_payment',
+templateUrl: 'templates/rent_payment.html',
+controller: 'PaymentCtrl'
+})
+
 
   // setup an abstract state for the tabs directive
     .state('tab', {

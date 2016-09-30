@@ -3,17 +3,29 @@
 angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, $ionicLoading) {
-    $ionicLoading
+
   })
 
   .controller('HousingCtrl', function() {
 
 })
 
-  .controller('MoneyCtrl', function() {
-  this.settings = {
-    enableFriends: true
-  };
+.controller('PaymentCtrl', function () {
+
+})
+
+.controller('MoneyCtrl', function ($scope, $state) {
+  $scope.pay_roomies = function (){
+    console.log("pay roomies");
+    $state.go("roomie_payment");
+  }
+})
+
+.controller('MoneyCtrl', function ($scope, $state) {
+  $scope.pay_rent = function () {
+    console.log("pay rent");
+    $state.go("rent_payment");
+  }
 })
 
 .controller('InfoCtrl', function() {
@@ -36,7 +48,7 @@ this.settings = {
       // }
       $state.go('tab.roomies');
     }, function (error) {
-      $log.log("fuck my life");
+      $log.log("luck my fife");
     });
     $scope.image_src = 'img/homeas.jpg';
   };
