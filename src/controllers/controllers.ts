@@ -6,8 +6,40 @@ angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
     $ionicLoading
   })
 
-  .controller('HousingCtrl', function() {
-
+  .controller('HousingCtrl', function($scope) {
+    $scope.houses = [
+      {
+        "id":1,
+        "streetAddress":"3426 Christie Way",
+        "city":"Bedford",
+        "state":"MA",
+        "zipCode":"1730",
+        "country":"United States",
+        "email":"ErnestoJTheroux@dayrep.com",
+        "latitude":"42.418043",
+        "longitude":"-71.346313",
+        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
+        "discription":"",
+        "price":10000,
+        "bedrooms":"",
+        "bathrooms":""
+      },
+      {
+        "id":2,
+        "streetAddress":"3426 Christie Way",
+        "city":"Bedford",
+        "state":"MA",
+        "zipCode":"1730",
+        "country":"United States",
+        "email":"ErnestoJTheroux@dayrep.com",
+        "latitude":"42.418043",
+        "longitude":"-71.346313",
+        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
+        "discription":"",
+        "price":7000,
+        "bedrooms":"",
+        "bathrooms":""
+      }];
 })
 
   .controller('MoneyCtrl', function() {

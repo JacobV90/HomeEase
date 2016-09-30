@@ -1238,10 +1238,28 @@ li {
   width: 100%;
   z-index: 0; }
 
-.button-container {
-  background-color: rgba(255, 255, 255, 0.5);
-  height: 50;
+.title-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  position: fixed;
+  text-align: center;
+  height: auto;
   width: 100%; }
+
+.btn {
+  width: 70vw;
+  margin-top: 10vh; }
+
+.btn-holder {
+  margin-top: 5vh;
+  margin-bottom: 2vh; }
+
+.facebook-logo {
+  content: url("../img/facebook_logo.png");
+  width: 40px; }
+
+.linkedin-logo {
+  content: url("../img/linkedin.png");
+  width: 70%; }
 
 .holder {
   position: relative; }

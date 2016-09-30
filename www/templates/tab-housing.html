@@ -6,9 +6,25 @@
 -->
 <ion-view view-title="Housing">
   <ion-content class="padding">
-    <img ng-src="{{chat.chat.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{chat.chat.lastText}}
-    </p>
+    <div class="list card" ng-repeat="house in houses">
+
+     <div class="item item-avatar">
+       <img src="mcfly.jpg">
+       <h2>price:{{house.price}}</h2>
+       <p>November 05, 1955</p>
+     </div>
+
+     <div class="item item-body">
+       <img class="full-image" src="delorean.jpg">
+       <p>
+         This will be hidden by default and expand when header is clicked
+       </p>
+       <p>
+         <a href="#" class="subdued">1 Like</a>
+         <a href="#" class="subdued">5 Comments</a>
+       </p>
+     </div>
+
+   </div>
   </ion-content>
 </ion-view>
