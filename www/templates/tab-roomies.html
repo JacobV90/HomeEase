@@ -1,13 +1,13 @@
 <ion-view view-title="Roomies">
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats.chats" type="item-text-wrap" >
-        <img ng-src="{{chat.face}}">
-        <h2>{{chat.name}}</h2>
-        <p>{{chat.lastText}}</p>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roomie in roomies" type="item-text-wrap" ng-click="openModal(roomie)">
+        <img ng-src="{{roomie.face}}">
+        <h2>{{roomie.name}}</h2>
+
         <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <ion-option-button class="button-assertive" ng-click="chats.remove(chat)">
+        <ion-option-button class="button-assertive" ng-click="remove(chat)">
           Delete
         </ion-option-button>
       </ion-item>

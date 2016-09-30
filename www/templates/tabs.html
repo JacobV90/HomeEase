@@ -8,22 +8,21 @@ navigation history that also transitions its views in and out.
 <ion-side-menus>
   <!-- Left menu -->
   <ion-side-menu side="left">
-    <div class="list card">
+    <div class="list card" ng-controller="SideMenuCtrl">
 
-      <div class="item item-avatar">
-        <img src="mcfly.jpg">
-        <h2>Marty McFly</h2>
-        <p>November 05, 1955</p>
+      <div class="item item-avatar" >
+        <img src="{{profile_pic}}">
+        <h2>{{name}}</h2>
       </div>
 
       <a href="#" class="item item-icon-left">
-        <i class="icon ion-ios-telephone"></i>
-        Home
+        <i class="icon ion-home"></i>
+        My Home
       </a>
 
       <a href="#" class="item item-icon-left">
-        <i class="icon ion-wifi"></i>
-        Roomates
+        <i class="icon ion-person-stalker"></i>
+        My Roomates
       </a>
 
       <a href="#" class="item item-icon-left">
@@ -32,7 +31,7 @@ navigation history that also transitions its views in and out.
       </a>
 
       <a href="#" class="item item-icon-left">
-        <i class="icon ion-home"></i>
+        <i class="icon ion-ios-paper"></i>
         Documents
       </a>
 
@@ -51,12 +50,12 @@ navigation history that also transitions its views in and out.
     <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
       <!-- Dashboard Tab -->
-      <ion-tab title="Roomates" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/roomies">
+      <ion-tab title="Roomates" icon-off="icon ion-person-stalker" icon-on="icon ion-person-stalker" href="#/tab/roomies">
         <ion-nav-view name="tab-roomies"></ion-nav-view>
       </ion-tab>
 
       <!-- Chats Tab -->
-      <ion-tab title="Housing" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/housing">
+      <ion-tab title="Housing" icon-off="icon ion-home" icon-on="icon ion-home" href="#/tab/housing">
         <ion-nav-view name="tab-housing"></ion-nav-view>
       </ion-tab>
 

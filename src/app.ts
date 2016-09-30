@@ -2,7 +2,7 @@
 /// <reference path="controllers/controllers.ts" />
 
 
-angular.module('app', ['ionic', 'app.controllers', 'ngOpenFB', 'ngCordova'])
+var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngOpenFB', 'ngCordova'])
 
 .run(function($ionicPlatform, ngFB) {
   $ionicPlatform.ready(function() {
