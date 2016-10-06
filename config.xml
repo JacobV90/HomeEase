@@ -38,7 +38,6 @@
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
-    <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
     <plugin name="cordova-plugin-facebook4" spec="/Users/jacobveal/Desktop/cordova-plugin-facebook4">
         <variable name="APP_ID" value="1383432301671180" />
         <variable name="APP_NAME" value="HomeEase - Test1" />

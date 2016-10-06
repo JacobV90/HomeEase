@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "ionic-typescript: An Ionic project",
   "scripts": {
-    "setup": "sudo npm install -g ionic cordova tsd bower && npm install && tsd install && bower install"
+    "env-setup": "npm install -g ionic cordova tsd bower gulp",
+    "dev-setup": "npm install && tsd install && bower install && cordova platform add ios && cordova platform add android"
   },
   "dependencies": {
     "frow": "^1.1.1",
@@ -15,6 +16,9 @@
   },
   "devDependencies": {
     "bower": "^1.3.3",
+    "browser-sync": "^2.17.0",
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
     "gulp-sass": "^2.0.4",
     "gulp-tsc": "^1.1.1",
     "gulp-util": "^2.2.14",

@@ -7,12 +7,15 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var typescript = require('gulp-tsc');
+var livereload = require('gulp-livereload');
+
 var paths = {
   sass: ['./scss/**/*.scss'],
-  src: ['./src/*.ts']
+  src: ['./src/*.ts'],
+  www: ['./www/*']
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['server','sass','compile','watch']);
 
 gulp.task('compile', function() {
   gulp.src(paths.src)
@@ -20,7 +23,22 @@ gulp.task('compile', function() {
       emitError: false
     }))
     .pipe(gulp.dest('www/js/'))
-})
+    .pipe(livereload());
+});
+
+gulp.task('server', function(){
+  connect.server({
+    root: ['www'],
+    port: 9000,
+    livereload: true
+  });
+});
+
+gulp.task('watch', function(){
+    livereload.listen();
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.src, ['compile']);
+});
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -36,12 +54,8 @@ gulp.task('sass', function(done) {
       extname: '.min.css'
     }))
     .pipe(gulp.dest('./www/css/'))
+    .pipe(livereload())
     .on('end', done);
-});
-
-gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.src, ['compile']);
 });
 
 gulp.task('install', ['git-check'], function() {
