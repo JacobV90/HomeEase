@@ -15,6 +15,11 @@ Run: "gulp"
 
 Navigate to URL where files are being served (address is in terminal output from gulp)
 
+#For Devices
+Run: ionic run (android/ios)
+ - Device must be connected or emulator setup
+
+
 #HTML
 Files are located in www/templates
  - after adding a new html file, update the state provider with the location in app.ts

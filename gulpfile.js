@@ -13,8 +13,8 @@ var connect = require('gulp-connect');
 
 var paths = {
   sass: ['./scss/**/*.scss'],
-  src: ['./src/*.ts'],
-  www: ['./www/*']
+  src: ['./src/**/*.ts'],
+  www: ['./www/**/*']
 };
 
 gulp.task('default', ['install-typings','sass','compile','watch','server',]);
