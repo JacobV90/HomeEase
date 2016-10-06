@@ -7,37 +7,35 @@ navigation history that also transitions its views in and out.
 
 <ion-side-menus>
   <!-- Left menu -->
-  <ion-side-menu side="left">
-    <div class="list card" ng-controller="SideMenuCtrl">
+  <ion-side-menu side="left" ng-controller="SideMenuCtrl">
+    <div class="list" >
 
-      <div class="item item-avatar" >
+      <a class="item item-thumbnail-left profile-header">
         <img src="{{profile_pic}}">
         <h2>{{name}}</h2>
-      </div>
+      </a>
 
-      <a href="#" class="item item-icon-left">
+      <a href="/#/myhome" class="item item-icon-left office-task-filter">
         <i class="icon ion-home"></i>
         My Home
       </a>
 
-      <a href="#" class="item item-icon-left">
+      <a href="myroomies" class="item item-icon-left office-task-filter">
         <i class="icon ion-person-stalker"></i>
         My Roomates
       </a>
 
-      <a href="#" class="item item-icon-left">
+      <a href="mybank" class="item item-icon-left office-task-filter">
         <i class="icon ion-card"></i>
-        Card information
+        Bank & Card Information
       </a>
 
-      <a href="#" class="item item-icon-left">
+      <a href="mydocuments" class="item item-icon-left office-task-filter">
         <i class="icon ion-ios-paper"></i>
         Documents
       </a>
 
     </div>
-
-
   </ion-side-menu>
 
   <ion-side-menu-content>

@@ -2,9 +2,10 @@
 /// <reference path="controllers/controllers.ts" />
 
 
-var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngOpenFB', 'ngCordova'])
+var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova'])
 
-.run(function($ionicPlatform, ngFB) {
+
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -14,45 +15,52 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
     }
     if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
       window.StatusBar.styleLightContent();
     }
-    /*var id = "1383432301671180";
-    var version = "v2.7"; // or leave blank and default is v2.0
-
-    ngFB.init({appId: id});*/
 
   });
 
-  //ngFB.init({appId: '1383432301671180'});
 })
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider,$ionicConfigProvider, $cordovaFacebookProvider) {
 
-  var id = '1383432301671180';
-  var version = "v2.7"; // or leave blank and default is v2.0
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
   $stateProvider
 
   .state('login', {
-  url: '/login',
-  templateUrl: 'templates/login.html',
-  controller: 'LoginCtrl'
-})
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
 
+  .state('myhome', {
+    url: '/myhome',
+    templateUrl: 'templates/myhome.html',
+    controller: 'MyhomeCtrl'
+  })
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('myroomies', {
+    url: '/myroomies',
+    templateUrl: 'templates/myroomeis.html',
+    controller: 'MyroomiesCtrl'
+  })
+
+  .state('mybank ', {
+    url: '/mybank',
+    templateUrl: 'templates/mybank.html',
+    controller: 'MybankCtrl'
+  })
+
+  .state('mydocuments', {
+    url: '/mydocuments',
+    templateUrl: 'templates/mydocuments.html',
+    controller: 'MydocCtrl'
+  })
+
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
-
-  // Each tab has its own nav history stack:
 
   .state('tab.roomies', {
     url: '/roomies',

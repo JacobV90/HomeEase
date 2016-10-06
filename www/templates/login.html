@@ -1,24 +1,11 @@
 <ion-view view-title="Login" >
   <ion-content>
     <div class = 'background'>
-      <div class = "title-container">
+      <div class = "frow centered filter">
+      <div class = "frow">
         <h2>Home Ease</h2>
       </div>
-    <div class = "frow centered-column">
-      <div>
-          <div class="frow btn-holder">
-          <button class="button button-positive btn" ng-click="fbLogin()">
-             <i class="icon facebook-logo"></i>
-             Login with facebook
-           </button>
-        </div>
-        <div class="frow btn-holder">
-        <button class="button btn" >
-           <i class="icon linkedin-logo"></i>
-         </button>
-      </div>
-      <div class="frow">
-        <div class="list">
+      <div class="list ">
           <label class="item item-input">
             <span class="input-label">Username</span>
             <input type="text">
@@ -27,22 +14,30 @@
             <span class="input-label">Password</span>
             <input type="password">
           </label>
-        </div>
-        <div class="frow justify-between">
-        <div class="col-xs-1-2">
-            <button class="button button-balanced login-btn " ng-click="gotoMain()">
-              Login
-            </button>
-       </div>
-       <div class="col-xs-1-2">
-         <button class="button button-positive login-btn">
-            Sign-up
-          </button>
-        </div>
-        </div>
       </div>
-  </div>
-  </div>
+        <div class="frow btn-container">
+          <button class="button button-balanced btn" ng-click="gotoMain()">
+            Login
+        </button>
+        </div>
+          <div class="frow btn-container">
+          <button class="button btn button-positive " ng-click="fbLogin()">
+             <i class="icon facebook-logo"></i>
+             Login with Facebook
+           </button>
+         </div>
+        <div class="frow btn-container">
+        <button class="button btn">
+           <i class="icon linkedin-logo"></i>
+            Login with LinkedIn
+         </button>
+       </div>
+       <div class="frow">
+         <a class="signup">
+           Create an account
+         </a>
+      </div>
+     </div>
 </div>
 </ion-content>
 </ion-view>

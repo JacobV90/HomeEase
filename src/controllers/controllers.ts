@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
+angular.module('app.controllers', [ 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal) {
     $scope.roomies = Roomies.all();
@@ -49,8 +49,40 @@ angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
         };
   })
 
-  .controller('HousingCtrl', function() {
-
+  .controller('HousingCtrl', function($scope) {
+    $scope.houses = [
+      {
+        "id":1,
+        "streetAddress":"3426 Christie Way",
+        "city":"Bedford",
+        "state":"MA",
+        "zipCode":"1730",
+        "country":"United States",
+        "email":"ErnestoJTheroux@dayrep.com",
+        "latitude":"42.418043",
+        "longitude":"-71.346313",
+        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
+        "discription":"",
+        "price":10000,
+        "bedrooms":"",
+        "bathrooms":""
+      },
+      {
+        "id":2,
+        "streetAddress":"3426 Christie Way",
+        "city":"Bedford",
+        "state":"MA",
+        "zipCode":"1730",
+        "country":"United States",
+        "email":"ErnestoJTheroux@dayrep.com",
+        "latitude":"42.418043",
+        "longitude":"-71.346313",
+        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
+        "discription":"",
+        "price":7000,
+        "bedrooms":"",
+        "bathrooms":""
+      }];
 })
 
   .controller('MoneyCtrl', function() {
@@ -70,7 +102,9 @@ this.settings = {
   $scope.profile_pic = "img/terry-crews.jpg";
 })
 
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform, ngFB, $cordovaFacebook) {
+
+.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform,  $cordovaFacebook) {
+
   $scope.fbLogin = function () {
 
     $cordovaFacebook.getLoginStatus();
