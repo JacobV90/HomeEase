@@ -1,5 +1,24 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
+
+
+
+
+
+
+
+angular.module('ionicApp', ['ionic'])
+
+.controller('MyCtrl', function($scope) {
+
+
+});
+
+
+
+
+
+
 angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, $ionicLoading) {

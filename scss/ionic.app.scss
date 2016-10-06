@@ -67,5 +67,30 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   height: 12vh;
   width: 12vh;
 }
+
+----------------------------------------------------------
+
+<!-
+
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
+.main-wrap{
+  max-width:250px;
+  margin:auto
+}
+.row, .col{
+  text-align:center;
+}
+
+.col{
+  margin:5px !important;
+  border-radius: 8px !important;
+  padding:15px 0px !important;
+}
+-----------------------------------------------------------
+
+
+
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
