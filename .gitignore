@@ -3,4 +3,5 @@ platforms/*
 www/lib
 www/typings
 typings/*
-www/css
+www/css/*
+plugins

@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var typescript = require('gulp-tsc');
 var livereload = require('gulp-livereload');
+var connect = require('gulp-connect');
 
 var paths = {
   sass: ['./scss/**/*.scss'],

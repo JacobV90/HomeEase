@@ -1,6 +1,4 @@
 
-/// <reference path="../../typings/tsd.d.ts" />
-
 angular.module('app.services', [])
 
 .factory('Roomies', function() {
@@ -15,7 +13,7 @@ angular.module('app.services', [])
   }, {
     id: 1,
     name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
+    lastText: 'Hey, its me',
     face: 'img/max.png'
   }, {
     id: 2,

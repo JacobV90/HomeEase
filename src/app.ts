@@ -1,9 +1,6 @@
-/// <reference path="../typings/tsd.d.ts" />
-/// <reference path="controllers/controllers.ts" />
-
+/// <reference path="../typings/index.d.ts" />
 
 var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova'])
-
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
