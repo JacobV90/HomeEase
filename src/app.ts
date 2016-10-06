@@ -1,4 +1,4 @@
-/// <reference path="../typings/index.d.ts" />
+///<reference path="../typings/index.d.ts"/>
 
 var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova'])
 

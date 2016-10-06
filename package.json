@@ -22,6 +22,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-sass": "^2.0.4",
     "gulp-tsc": "^1.1.1",
+    "gulp-typings": "^2.0.4",
     "gulp-util": "^2.2.14",
     "shelljs": "^0.3.0",
     "typings": "^1.4.0"
@@ -37,8 +38,8 @@
       "locator": "cordova-plugin-facebook4",
       "id": "cordova-plugin-facebook4",
       "variables": {
-          "APP_ID": "1387419224605821",
-          "APP_NAME": "HomeEase - Android"
+        "APP_ID": "1387419224605821",
+        "APP_NAME": "HomeEase - Android"
       }
     }
   ],

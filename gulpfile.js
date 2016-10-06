@@ -7,6 +7,7 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var typescript = require('gulp-tsc');
+var gulpTypings = require("gulp-typings");
 var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
 
@@ -16,7 +17,7 @@ var paths = {
   www: ['./www/*']
 };
 
-gulp.task('default', ['server','sass','compile','watch']);
+gulp.task('default', ['install-typings','sass','compile','watch','server',]);
 
 gulp.task('compile', function() {
   gulp.src(paths.src)
@@ -25,6 +26,12 @@ gulp.task('compile', function() {
     }))
     .pipe(gulp.dest('www/js/'))
     .pipe(livereload());
+});
+
+gulp.task("install-typings",function(){
+    var stream = gulp.src("./typings.json")
+        .pipe(gulpTypings()); //will install all typingsfiles in pipeline.
+    return stream; // by returning stream gulp can listen to events from the stream and knows when it is finished.
 });
 
 gulp.task('server', function(){
