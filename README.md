@@ -12,13 +12,12 @@ Run: "npm run dev-setup"
 
 # Workflow
 Run: "gulp"
+  - Ignore warnings from terminal if running this command from a fresh clone
 
 Navigate to URL where files are being served (address is in terminal output from gulp)
 
-#For Devices
-Run: ionic run (android/ios)
- - Device must be connected or emulator setup
-
+# Device
+Run: ionic run (android/ios) 
 
 #HTML
 Files are located in www/templates
