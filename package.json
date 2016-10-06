@@ -4,7 +4,7 @@
   "description": "ionic-typescript: An Ionic project",
   "scripts": {
     "env-setup": "npm install -g ionic cordova typings bower gulp",
-    "dev-setup": "npm install && bower install && typings install"
+    "dev-setup": "npm install && bower install && typings install && ionic state restore"
   },
   "dependencies": {
     "frow": "^1.1.1",
