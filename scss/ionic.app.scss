@@ -35,10 +35,19 @@ $green: #9BC995;
   }
 }
 
+.signup{
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.login-form{
+  width:100%;
+}
+
 .filter{
   background-color: rgba(0, 0, 0, 0.5);
   height: 100vh;
-  padding: 5px;
+  padding: 10px;
 }
 
 .profile-header{
@@ -57,6 +66,7 @@ $green: #9BC995;
 
 .btn-container{
   margin-top: 3vh;
+  width: 100%;
 }
 
 .facebook-logo {

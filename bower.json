@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "angular-facebook": "^0.2.3",
-    "ngCordova": "^0.1.27-alpha"
+    "ngCordova": "^0.1.27-alpha",
+    "firebase": "^3.4.1",
+    "angularfire": "^2.0.2"
   }
 }

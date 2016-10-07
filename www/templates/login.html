@@ -1,22 +1,20 @@
 <ion-view view-title="Login" >
-  <ion-content>
+  <ion-content ng-controller="LoginCtrl">
     <div class = 'background'>
       <div class = "frow centered filter">
       <div class = "frow">
         <h2>Home Ease</h2>
       </div>
-      <div class="list ">
+      <div class="list login-form">
           <label class="item item-input">
-            <span class="input-label">Username</span>
-            <input type="text">
+            <input type="text" placeholder="User Name" ng-model="email">
           </label>
           <label class="item item-input">
-            <span class="input-label">Password</span>
-            <input type="password">
+            <input type="text" placeholder="Password" ng-model="pwdForLogin" >
           </label>
-      </div>
+        </div>
         <div class="frow btn-container">
-          <button class="button button-balanced btn" ng-click="gotoMain()">
+          <button class="button button-balanced btn" ng-click="signIn()">
             Login
         </button>
         </div>
@@ -33,9 +31,10 @@
          </button>
        </div>
        <div class="frow">
-         <a class="signup">
-           Create an account
-         </a>
+         <div class="frow btn-container" >
+           <a ng-click="signup()" class="signup">
+             Create an account
+           </a>
       </div>
      </div>
 </div>

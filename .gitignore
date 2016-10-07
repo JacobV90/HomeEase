@@ -1,7 +1,7 @@
 node_modules/*
 platforms/*
-www/lib
-www/typings
+www/lib/*
+www/typings/*
 typings/*
-www/css
-plugins
+www/css/*
+plugins/*

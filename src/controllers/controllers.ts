@@ -1,5 +1,4 @@
-
-angular.module('app.controllers', [ 'ionic'])
+angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal) {
     $scope.roomies = Roomies.all();
@@ -96,18 +95,47 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate) {
-  $scope.name = "Demo User";
+.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate, Auth, $state) {
+
+  $scope.logout = function(){
+    Auth.$signOut().then(function(){
+        $state.go('login');
+    }, function(error){
+
+    });
+
+  }
   $scope.profile_pic = "img/terry-crews.jpg";
 })
 
+.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, $rootScope){
 
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, $ionicPlatform,  $cordovaFacebook) {
+  $scope.createUser = function (user) {
+      console.log("Create User Function called");
+      $scope.message = null;
+      $scope.error = null;
+
+      // Create a new user
+      Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
+        .then(function(firebaseUser) {
+          $scope.message = "User created with uid: " + firebaseUser.uid;
+          $scope.modal.destroy();
+        }).catch(function(error) {
+          $scope.error = error;
+        });
+    };
+
+    $scope.showLogin = function(){
+      $scope.modal.hide();
+    }
+
+})
+
+
+.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform, $cordovaFacebook, $ionicLoading, $rootScope) {
 
   $scope.fbLogin = function () {
-
     $cordovaFacebook.getLoginStatus();
-
     $cordovaFacebook.login(["public_profile", "email", "user_friends"])
     .then(function(success) {
       // { id: "634565435",
@@ -124,4 +152,34 @@ this.settings = {
   $scope.gotoMain = function() {
     $state.go("tab.roomies");
   };
+
+  $ionicModal.fromTemplateUrl('templates/signup.html', {
+      scope: $scope
+  }).then(function (modal) {
+      $scope.modal = modal;
+  });
+
+  $scope.signup = function(){
+    $scope.modal.show();
+  };
+
+  $scope.signIn = function () {
+
+      if ($scope.email && $scope.pwdForLogin) {
+          $ionicLoading.show({
+              template: 'Signing In...'
+          });
+          Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
+          .then(function (authData) {
+              console.log("Logged in as:" + authData.uid);
+              $rootScope.user = authData.uid;
+              $ionicLoading.hide();
+              $state.go('tab.roomies');
+          }).catch(function (error) {
+              alert("Authentication failed:" + error.message);
+              $ionicLoading.hide();
+          });
+      } else
+          alert("Please enter email and password both");
+  }
 });

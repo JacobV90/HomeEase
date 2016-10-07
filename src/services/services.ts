@@ -1,5 +1,5 @@
 
-angular.module('app.services', [])
+angular.module('app.services', ['firebase'])
 
 .factory('Roomies', function() {
   // Might use a resource here that returns a JSON array
@@ -48,4 +48,8 @@ angular.module('app.services', [])
       return null;
     }
   };
-});
+})
+.factory("Auth", ["$firebaseAuth", "$rootScope",
+         function ($firebaseAuth) {
+            return $firebaseAuth();
+    }]);

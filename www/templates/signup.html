@@ -1,0 +1,23 @@
+<ion-modal-view ng-controller="ModalCtrl">
+    <ion-content ng-controller="SignUpCtrl">
+
+        <div class="list" >
+        <label class="item item-input">
+          <input type="text" placeholder="Email" ng-model="email">
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="password" ng-model="password">
+        </label>
+        <label class="item item-input">
+          <textarea placeholder="Comments"></textarea>
+        </label>
+        </div>
+
+        <button ng-click="createUser()" class="button btn button-positive ">Create User</button>
+        <button ng-click="showLogin()" class="button btn button-balanced ">Go Back</button>
+
+        <p ng-if="message">Message: <strong>{{ message }}</strong></p>
+        <p ng-if="error">Error: <strong>{{ error }}</strong></p>
+      </div>
+    </ion-content>
+</ion-modal-view>

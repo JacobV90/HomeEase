@@ -1,6 +1,6 @@
 ///<reference path="../typings/index.d.ts"/>
 
-var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova'])
+var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova','firebase'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -19,7 +19,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
 })
 
-.config(function($stateProvider, $urlRouterProvider,$httpProvider,$ionicConfigProvider, $cordovaFacebookProvider) {
+.config(function($stateProvider, $urlRouterProvider,$httpProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   $stateProvider
 
@@ -29,34 +29,43 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     controller: 'LoginCtrl'
   })
 
-  .state('myhome', {
+  .state('tab', {
+    url: '/tab',
+    abstract: true,
+    templateUrl: 'templates/tabs.html',
+    resolve: {
+        // controller will not be loaded until $requireSignIn resolves
+        // Auth refers to our $firebaseAuth wrapper in the factory below
+        "currentAuth": ["Auth", function(Auth) {
+          // $requireSignIn returns a promise so the resolve waits for it to complete
+          // If the promise is rejected, it will throw a $stateChangeError (see above)
+          return Auth.$requireSignIn();
+        }]
+      }
+  })
+
+  .state('tab.myhome', {
     url: '/myhome',
     templateUrl: 'templates/myhome.html',
     controller: 'MyhomeCtrl'
   })
 
-  .state('myroomies', {
+  .state('tab.myroomies', {
     url: '/myroomies',
     templateUrl: 'templates/myroomeis.html',
     controller: 'MyroomiesCtrl'
   })
 
-  .state('mybank ', {
+  .state('tab.mybank ', {
     url: '/mybank',
     templateUrl: 'templates/mybank.html',
     controller: 'MybankCtrl'
   })
 
-  .state('mydocuments', {
+  .state('tab.mydocuments', {
     url: '/mydocuments',
     templateUrl: 'templates/mydocuments.html',
     controller: 'MydocCtrl'
-  })
-
-  .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
   })
 
   .state('tab.roomies', {
