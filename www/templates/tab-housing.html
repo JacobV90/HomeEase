@@ -6,9 +6,20 @@
 -->
 <ion-view view-title="Housing">
   <ion-content class="padding">
-    <img ng-src="{{chat.chat.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{chat.chat.lastText}}
-    </p>
+    <div class="list card" ng-repeat="house in houses">
+
+     <div class="item item-avatar">
+       <h2>Address:{{house.streetAddress}}</h2>
+       <h2>Price:{{house.price}}</h2>
+     </div>
+
+     <div class="item item-body">
+       <img class="full-image" src="delorean.jpg">
+       <p>
+         A description of the housing property will go here
+       </p>
+     </div>
+
+   </div>
   </ion-content>
 </ion-view>

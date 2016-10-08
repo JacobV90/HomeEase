@@ -1,12 +1,14 @@
 {
   "name": "RoomEASE",
   "app_id": "homease",
-  "watchPatterns": [
-    "www/*",
-    "!www/css/**/*"
-  ],
   "gulpStartupTasks": [
     "sass",
+    "compile",
     "watch"
+  ],
+  "watchPatterns": [
+    "www/*",
+    "!www/css/**/*",
+    "scss/*"
   ]
 }
