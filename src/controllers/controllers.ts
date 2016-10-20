@@ -108,22 +108,50 @@ this.settings = {
   $scope.profile_pic = "img/terry-crews.jpg";
 })
 
-.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, $rootScope){
+.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup){
 
-  $scope.createUser = function (user) {
-      console.log("Create User Function called");
-      $scope.message = null;
-      $scope.error = null;
+  $scope.createUser = function(signupForm){
 
-      // Create a new user
-      Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
-        .then(function(firebaseUser) {
-          $scope.message = "User created with uid: " + firebaseUser.uid;
-          $scope.modal.destroy();
-        }).catch(function(error) {
-          $scope.error = error;
-        });
-    };
+    if (signupForm.$valid) {
+
+        var email = $scope.user.email;
+        var password = $scope.user.password;
+        var first_name = $scope.user.firstName;
+        var last_name = $scope.user.lastName;
+        var imageUrl = null;
+
+        console.log("form submitted");
+
+        if($scope.isChecked){
+
+        Auth.$createUserWithEmailAndPassword(email, password)
+            .then(function(newUser) {
+              //$scope.message = "User created with uid: " + firebaseUser.uid;
+              firebase.database().ref('Users/' + newUser.uid).set({
+                firstname: first_name,
+                lastname: last_name,
+                email: email,
+                profile_pic : imageUrl
+              });;
+              /*list.$add({ firstName: first_name, lastName: last_name, email: email}).then(function(ref) {
+                ref.key = firebaseUser.uid;
+              });*/
+              $scope.modal.remove();
+            }).catch(function(error) {
+              $ionicPopup.alert({
+                title: 'Sign up error',
+                template: error
+              });
+            });
+        }else{
+          $ionicPopup.alert({
+            title: 'Sign up error',
+            template: 'Please confirm that you are 18 years old or older'
+          })
+        }
+
+      }
+    }
 
     $scope.showLogin = function(){
       $scope.modal.hide();
@@ -148,6 +176,8 @@ this.settings = {
     });
     $scope.image_src = 'img/homeas.jpg';
   };
+
+  $scope.signup_img = 'img/modern_living.jpg';
 
   $scope.gotoMain = function() {
     $state.go("tab.roomies");

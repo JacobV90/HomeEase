@@ -1,23 +1,43 @@
-<ion-modal-view ng-controller="ModalCtrl">
+<ion-modal-view ng-controller="SignUpCtrl">
+  <div class="bar bar-header bar-balanced">
+    <h1 class="title">Join the Home Ease life</h1>
+  </div>
     <ion-content ng-controller="SignUpCtrl">
-
-        <div class="list" >
-        <label class="item item-input">
-          <input type="text" placeholder="Email" ng-model="email">
-        </label>
-        <label class="item item-input">
-          <input type="text" placeholder="password" ng-model="password">
-        </label>
-        <label class="item item-input">
-          <textarea placeholder="Comments"></textarea>
-        </label>
-        </div>
-
-        <button ng-click="createUser()" class="button btn button-positive ">Create User</button>
-        <button ng-click="showLogin()" class="button btn button-balanced ">Go Back</button>
-
-        <p ng-if="message">Message: <strong>{{ message }}</strong></p>
-        <p ng-if="error">Error: <strong>{{ error }}</strong></p>
-      </div>
-    </ion-content>
+      <div class="form-container">
+      <form name="signupForm" ng-submit="createUser(signupForm)" class="list card no-margin" novalidate="" >
+          <ion-input class="item item-input item-stacked-label"
+            ng-class="{ 'has-errors' : signupForm.firstName.$invalid,
+                  'no-errors' : signupForm.firstName.$valid}">
+            <label>First Name</label>
+            <input type="text" name="firstName"  ng-model="user.firstName" required>
+          </ion-input>
+          <ion-input class="item item-input item-stacked-label"
+            ng-class="{ 'has-errors' : signupForm.lastName.$invalid ,
+                  'no-errors' : signupForm.lastName.$valid }">
+            <label>Last Name</label>
+            <input type="text" name="lastName" ng-model="user.lastName" required>
+          </ion-input>
+        <ion-input class="item item-input item-stacked-label"
+          ng-class="{ 'has-errors' : signupForm.password.$invalid ,
+                'no-errors' : signupForm.password.$valid}">
+          <label>Password</label>
+          <input type="password" name="password"  ng-model="user.password" required>
+        </ion-input>
+        <ion-input class="item item-input item-stacked-label"
+          ng-class="{ 'has-errors' : signupForm.email.$invalid,
+                'no-errors' : signupForm.email.$valid }">
+                <label>Email</label>
+          <input type="email" name="email" ng-model="user.email" required>
+        </ion-input>
+        <ion-checkbox ng-model="isChecked">I am over the age of 18</ion-checkbox>
+        <ion-input class="item-input padding">
+          <input type="submit" class="button button-balanced" value="Submit"
+            ng-disabled="signupForm.$invalid">
+        </ion-input>
+        <ion-input class="item-input padding" ng-click="showLogin()">
+          <input type="button" class="button button-positive" value="Go Back">
+        </ion-input>
+    </form>
+  </div>
+  </ion-content>
 </ion-modal-view>

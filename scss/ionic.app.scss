@@ -35,9 +35,61 @@ $green: #9BC995;
   }
 }
 
+.form-container{
+  margin-top: 10vh;
+}
+
+.signup-display{
+  width:100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.has-errors {
+  border-bottom: 2px solid #FF0000;
+}
+
+.no-errors {
+  border-bottom: 2px solid #52c543;
+}
+
+/** Styling for the password field when an error exists**/
+.error-container {
+  margin: 0;
+}
+
+.error {
+  padding: 8px 8px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #555;
+  vertical-align: middle;
+}
+
+.error i {
+  font-size: 24px;
+  color: #B83E2C;
+  vertical-align: middle;
+}
+
+.last-error-container > .error {
+  padding: 10px 16px 0;
+}
+
+/** Styling for the password field when an error exists**/
+.error-container {
+  margin: 0;
+}
+
 .signup{
   color: #ffffff;
   font-size: 20px;
+}
+
+.signup-img{
+  height: 100%;
+  width: 100%;
 }
 
 .login-form{

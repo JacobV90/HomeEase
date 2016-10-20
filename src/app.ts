@@ -2,7 +2,7 @@
 
 var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova','firebase'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, firebase) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -16,9 +16,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     }
 
   });
-
 })
-
 .config(function($stateProvider, $urlRouterProvider,$httpProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   $stateProvider
