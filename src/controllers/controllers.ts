@@ -1,5 +1,5 @@
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
 
 
@@ -24,7 +24,7 @@ angular.module('app.controllers', [ 'ngOpenFB', 'ionic'])
   .controller('RoomiesCtrl', function($scope, $ionicLoading) {
 
   })
-=======
+//=======
 angular.module('app.controllers', [ 'ionic'])
 
   .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal) {
@@ -63,7 +63,7 @@ angular.module('app.controllers', [ 'ionic'])
     // Execute action
   });
 })
->>>>>>> cc9eb4b1e4f47955a6ea3b255336ca145b7d6787
+//>>>>>>> cc9eb4b1e4f47955a6ea3b255336ca145b7d6787
 
   .controller('ModalCtrl', function($scope, $ionicActionSheet) {
 
