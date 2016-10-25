@@ -6,7 +6,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
       Roomies.remove(roomie);
     };
 
-  $ionicModal.fromTemplateUrl('templates/modal.html', function(modal) {
+  $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
           $scope.modalCtrl = modal;
       }, {
           scope: $scope,
