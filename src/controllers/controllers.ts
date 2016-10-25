@@ -6,7 +6,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
       Roomies.remove(roomie);
     };
 
-    $ionicModal.fromTemplateUrl('templates/modal.html', function(modal) {
+  $ionicModal.fromTemplateUrl('templates/modal.html', function(modal) {
           $scope.modalCtrl = modal;
       }, {
           scope: $scope,
@@ -95,7 +95,11 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate, Auth, $state) {
+.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate, $rootScope, Auth, $state, $firebaseObject) {
+
+
+  // synchronize the object with a three-way data binding
+  // click on `index.html` above to see it used in the DOM!
 
   $scope.logout = function(){
     Auth.$signOut().then(function(){
@@ -103,7 +107,6 @@ this.settings = {
     }, function(error){
 
     });
-
   }
   $scope.profile_pic = "img/terry-crews.jpg";
 })
@@ -160,7 +163,8 @@ this.settings = {
 })
 
 
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform, $cordovaFacebook, $ionicLoading, $rootScope) {
+.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform,
+   $cordovaFacebook, $ionicLoading, $rootScope, $firebaseObject) {
 
   $scope.fbLogin = function () {
     $cordovaFacebook.getLoginStatus();
@@ -202,7 +206,15 @@ this.settings = {
           Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
           .then(function (authData) {
               console.log("Logged in as:" + authData.uid);
-              $rootScope.user = authData.uid;
+              var ref = firebase.database().ref('/Users' + authData.uid);
+              var obj = $firebaseObject(ref);
+              obj.$loaded().then(function() {
+                  console.log("loaded record:", obj);
+                 // To iterate the key/value pairs of the object, use angular.forEach()
+                 /*angular.forEach(obj, function(value, key) {
+                    console.log(key, value);
+                 });*/
+               });
               $ionicLoading.hide();
               $state.go('tab.roomies');
           }).catch(function (error) {
