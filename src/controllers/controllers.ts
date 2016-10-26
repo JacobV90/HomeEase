@@ -47,7 +47,15 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-  .controller('HousingCtrl', function($scope) {
+  .controller('HousingCtrl', function($scope, $ionicModal) {
+
+    $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+            $scope.modalCtrl = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+            focusFirstInput: false
+          });
     $scope.houses = [
       {
         "id":1,
@@ -206,10 +214,14 @@ this.settings = {
           Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
           .then(function (authData) {
               console.log("Logged in as:" + authData.uid);
-              var ref = firebase.database().ref('/Users' + authData.uid);
+              var ref = firebase.database().ref('/Users/' + authData.uid);
               var obj = $firebaseObject(ref);
               obj.$loaded().then(function() {
-                  console.log("loaded record:", obj);
+                $rootScope.user = {
+                  'firstname': obj.firstname,
+                  'lastname': obj.lastname,
+                  'email': obj.email
+                };
                  // To iterate the key/value pairs of the object, use angular.forEach()
                  /*angular.forEach(obj, function(value, key) {
                     console.log(key, value);

@@ -12,7 +12,8 @@ navigation history that also transitions its views in and out.
 
       <a class="item item-thumbnail-left profile-header">
         <img src="{{profile_pic}}">
-        <h2>{{user.firstname}}</h2>
+        <h2>{{user.firstname}} {{user.lastname}}</h2>
+        <h2>{{user.email}}</h2>
       </a>
 
       <a href="/#/myhome" class="item item-icon-left office-task-filter">
@@ -63,7 +64,7 @@ navigation history that also transitions its views in and out.
       </ion-tab>
 
       <!-- Account Tab -->
-      <ion-tab title="Money" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/money">
+      <ion-tab title="Money" icon-off="ion-social-usd" icon-on="ion-social-usd" href="#/tab/money">
         <ion-nav-view name="tab-money"></ion-nav-view>
       </ion-tab>
 

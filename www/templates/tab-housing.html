@@ -9,8 +9,8 @@
     <div class="list card" ng-repeat="house in houses">
 
      <div class="item item-avatar">
-       <h2>Address:{{house.streetAddress}}</h2>
-       <h2>Price:{{house.price}}</h2>
+       <h2>${{house.price}}</h2>
+       <h2>{{house.streetAddress}}</h2>
      </div>
 
      <div class="item item-body">
