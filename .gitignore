@@ -5,3 +5,5 @@ www/typings/*
 typings/*
 www/css/*
 plugins/*
+www/js/*
+www/src/*
