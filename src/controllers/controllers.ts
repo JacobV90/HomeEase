@@ -57,7 +57,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           });
 
     $scope.openModal = function(house) {
-      $scope.modalData = {"streetAddress": house.streetAddress, "img":house.image};
+      $scope.modalData = house;
       $scope.modalCtrl.show();
     };
 
@@ -65,39 +65,73 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
       $scope.modalCtrl.hide();
     }
 
-    $scope.houses = [
-      {
-        "id":1,
-        "streetAddress":"3426 Christie Way",
-        "city":"Bedford",
-        "state":"MA",
-        "zipCode":"1730",
-        "country":"United States",
-        "email":"ErnestoJTheroux@dayrep.com",
-        "latitude":"42.418043",
-        "longitude":"-71.346313",
-        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
-        "discription":"",
-        "price":10000,
-        "bedrooms":"",
-        "bathrooms":""
-      },
-      {
-        "id":2,
-        "streetAddress":"3426 Christie Way",
-        "city":"Bedford",
-        "state":"MA",
-        "zipCode":"1730",
-        "country":"United States",
-        "email":"ErnestoJTheroux@dayrep.com",
-        "latitude":"42.418043",
-        "longitude":"-71.346313",
-        "image":"http://s1.postimg.org/j5mytq3iz/profile.jpg",
-        "discription":"",
-        "price":7000,
-        "bedrooms":"",
-        "bathrooms":""
-      }];
+    $scope.propertiesData =  { "Properties" : {
+    "Property 1" : {
+      "street" : "961 Miller Ave",
+      "city" : "Iowa City",
+      "state" : "IA",
+      "zipCode" : "52246",
+      "amenities" : "laundry in-unit",
+      "bathrooms" : 1.5,
+      "bedrooms" : 2,
+      "description" : "large living room",
+      "lat" : 41.6480415,
+      "long" : -91.5491192,
+      "owner" : "Big Ten Iowa City",
+      "price" : 600,
+      "tenants" : 4,
+      "img" : "https://activerain-store.s3.amazonaws.com/image_store/uploads/8/6/1/0/1/ar125563090910168.jpg"
+    },
+    "Property 2" : {
+      "street" : "902 North Dodge Street",
+      "city" : "Iowa City",
+      "state" : "IA",
+      "zipCode" : "52245",
+      "amenities" : "free garage parking, free Mediacom cable and internet",
+      "bathrooms" : 2,
+      "bedrooms" : 3,
+      "description" : "spacious",
+      "lat" : 41.67185,
+      "long" : -91.524997,
+      "owner" : "Big Ten Iowa City",
+      "price" : 465,
+      "tenants" : "2",
+      "img" : null
+    },
+    "Property 3" : {
+      "street" : "226 S Governor St",
+      "city" : "Iowa City",
+      "state" : "IA",
+      "zipCode" : "52240",
+      "amenities" : "large closet in bedroom",
+      "bathrooms " : 1,
+      "bedrooms" : 1,
+      "description" : "large kitchen",
+      "lat" : 41.658617,
+      "long" : -91.522852,
+      "owner" : "Big Ten Iowa City",
+      "price" : 560,
+      "tenants " : 5,
+      "img" : null
+    },
+    "Property 4" : {
+      "street" : "902 N Dodge St",
+      "city" : "Iowa City",
+      "state" : "IA",
+      "zipCode" : "52245",
+      "amenities" : "2 free parking spots, off street parking available",
+      "bathrooms" : 2,
+      "bedrooms " : 4,
+      "description" : "No central air, has wall A/C unit",
+      "lat" : 41.67185,
+      "long" : -91.524997,
+      "owner" : "Big Ten Iowa City",
+      "price" : 400,
+      "tenants" : 3,
+      "img" : null
+    }}
+  };
+  $scope.houses = $scope.propertiesData.Properties;
 })
 
   .controller('MoneyCtrl', function() {
