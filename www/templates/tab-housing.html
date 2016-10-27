@@ -6,7 +6,7 @@
 -->
 <ion-view view-title="Housing">
   <ion-content class="padding">
-    <div class="list card" ng-repeat="house in houses">
+    <div class="list card" ng-repeat="house in houses" ng-click="openModal(house)">
 
      <div class="item item-avatar">
        <h2>Address:{{house.streetAddress}}</h2>

@@ -47,7 +47,24 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-  .controller('HousingCtrl', function($scope) {
+  .controller('HousingCtrl', function($scope, $ionicModal) {
+    $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+            $scope.modalCtrl = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+            focusFirstInput: false
+          });
+
+    $scope.openModal = function(house) {
+      $scope.modalData = {"streetAddress": house.streetAddress, "img":house.image};
+      $scope.modalCtrl.show();
+    };
+
+    $scope.hideModal = function(){
+      $scope.modalCtrl.hide();
+    }
+
     $scope.houses = [
       {
         "id":1,
