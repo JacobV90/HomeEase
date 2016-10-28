@@ -16,6 +16,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     }
 
   });
+
 })
 
 .directive('fallbackSrc', function () {
@@ -120,4 +121,5 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
   });
 
   $urlRouterProvider.otherwise('/login');
+
 });
