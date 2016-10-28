@@ -16,8 +16,13 @@ Run: "gulp"
 
 Navigate to URL where files are being served (address is in terminal output from gulp)
 
+#Login
+  - for testing use
+    email: demo@milestone3.com
+    password: homeease
+
 # Device
-Run: ionic run (android/ios) 
+Run: ionic run (android/ios)
 
 #HTML
 Files are located in www/templates

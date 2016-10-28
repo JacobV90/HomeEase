@@ -181,18 +181,17 @@ this.settings = {
           $scope.modal.remove();
           $scope.uploadModal.show();
 
-        /*Auth.$createUserWithEmailAndPassword(email, password)
+        Auth.$createUserWithEmailAndPassword(email, password)
             .then(function(newUser) {
               //$scope.message = "User created with uid: " + firebaseUser.uid;
               firebase.database().ref('Users/' + newUser.uid).set({
                 firstname: first_name,
                 lastname: last_name,
                 email: email,
-                profile_pic : imageUrl
               });;
               /*list.$add({ firstName: first_name, lastName: last_name, email: email}).then(function(ref) {
                 ref.key = firebaseUser.uid;
-              });
+              });*/
               $scope.modal.remove();
               $scope.uploadModal.show();
             }).catch(function(error) {
@@ -200,7 +199,7 @@ this.settings = {
                 title: 'Sign up error',
                 template: error
               });
-            });*/
+            });
         }else{
           $ionicPopup.alert({
             title: 'Sign up error',
