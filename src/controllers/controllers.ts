@@ -132,6 +132,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     }}
   };
   $scope.houses = $scope.propertiesData.Properties;
+  $scope.showFilter=true;
 })
 
   .controller('MoneyCtrl', function() {
