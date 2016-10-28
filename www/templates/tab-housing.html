@@ -6,17 +6,19 @@
 -->
 <ion-view view-title="Housing">
   <ion-content class="padding">
-    <div class="list card" ng-repeat="house in houses">
-
-     <div class="item item-avatar">
-       <h2>${{house.price}}</h2>
-       <h2>{{house.streetAddress}}</h2>
+    <div class="list card" ng-repeat="house in houses" ng-click="openModal(house)">
+     <div class="item item-thumbnail-left">
+       <img ng-src="{{house.img}}" fallback-src="img/blankHouse.png">
+       <h2><b>{{house.owner}}</b></h2>
+       <h2>{{house.street}}</h2>
+       <h2>{{house.city}}, {{house.state}}</h2>
      </div>
 
-     <div class="item item-body">
-       <img class="full-image" src="delorean.jpg">
+     <div class="item item-divider">
        <p>
-         A description of the housing property will go here
+         ${{house.price}} per month<br>
+         Bedrooms: {{house.bedrooms}}<br>
+         Bathrooms: {{house.bathrooms}}
        </p>
      </div>
 

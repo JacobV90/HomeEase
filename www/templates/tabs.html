@@ -47,28 +47,35 @@ navigation history that also transitions its views in and out.
   <ion-side-menu-content>
 
     <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
+      <ion-nav-back-button></ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <!-- Toggle left side menu -->
+        <button menu-toggle="left" class="button button-icon icon ion-navicon-round"></button>
+      </ion-nav-buttons>
+      <ion-nav-buttons side="right" ng-if="showFilter!=false">
+        <script>console.log($scope.showFilter)</script>
+        <button class="button button-icon icon ion-funnel"></button>
+      </ion-nav-buttons>
     </ion-nav-bar>
 
-    <ion-tabs class="tabs-icon-top tabs-color-active-positive">
+    <ion-tabs class="tabs-icon-only tabs-color-active-positive">
 
       <!-- Dashboard Tab -->
-      <ion-tab title="Roomates" icon-off="icon ion-person-stalker" icon-on="icon ion-person-stalker" href="#/tab/roomies">
+      <ion-tab icon-off="icon ion-person-stalker" icon-on="icon ion-person-stalker" href="#/tab/roomies">
         <ion-nav-view name="tab-roomies"></ion-nav-view>
       </ion-tab>
 
       <!-- Chats Tab -->
-      <ion-tab title="Housing" icon-off="icon ion-home" icon-on="icon ion-home" href="#/tab/housing">
+      <ion-tab icon-off="icon ion-home" icon-on="icon ion-home" href="#/tab/housing">
         <ion-nav-view name="tab-housing"></ion-nav-view>
       </ion-tab>
 
       <!-- Account Tab -->
-      <ion-tab title="Money" icon-off="ion-social-usd" icon-on="ion-social-usd" href="#/tab/money">
+      <ion-tab icon-off="ion-social-usd" icon-on="ion-social-usd" href="#/tab/money">
         <ion-nav-view name="tab-money"></ion-nav-view>
       </ion-tab>
 
-      <ion-tab title="Info" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/info">
+      <ion-tab icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/info">
         <ion-nav-view name="tab-info"></ion-nav-view>
       </ion-tab>
 
