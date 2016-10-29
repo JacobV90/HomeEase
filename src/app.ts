@@ -16,7 +16,21 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     }
 
   });
+
 })
+
+.directive('fallbackSrc', function () {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs){
+      element.attr('src', attrs.fallbackSrc);
+			element.bind('error', function(){
+				element.attr('src', attrs.fallbackSrc);
+			});
+    }
+  };
+})
+
 .config(function($stateProvider, $urlRouterProvider,$httpProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   $stateProvider
@@ -107,4 +121,5 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
   });
 
   $urlRouterProvider.otherwise('/login');
+
 });
