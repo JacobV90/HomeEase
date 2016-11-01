@@ -135,12 +135,6 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   $scope.showFilter=true;
 })
 
-  .controller('MoneyCtrl', function() {
-  this.settings = {
-    enableFriends: true
-  };
-})
-
 .controller('InfoCtrl', function() {
 this.settings = {
   enableFriends: true
@@ -379,7 +373,7 @@ this.settings = {
        }, {
            scope: $scope,
            animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
-           focusFirstInput: false
+           focusFirstInput: true
   });
 
   $scope.signup = function(){
@@ -417,4 +411,5 @@ this.settings = {
       } else
           alert("Please enter email and password both");
   }
+
 });
