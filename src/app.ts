@@ -25,7 +25,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     link: function(scope, element, attrs){
       element.attr('src', attrs.fallbackSrc);
 			element.bind('error', function(){
-				element.attr('src', attrs.fallbackSrc);
+			     element.attr('src', attrs.fallbackSrc);
 			});
     }
   };
