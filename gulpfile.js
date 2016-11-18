@@ -10,14 +10,23 @@ var typescript = require('gulp-tsc');
 var gulpTypings = require("gulp-typings");
 var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
+var bowerFiles = require('main-bower-files');
+var uglify = require('gulp-uglify');
+var inject = require('gulp-inject');
+var ngAnnotate = require('gulp-ng-annotate');
 
 var paths = {
   sass: ['./scss/**/*.scss'],
   src: ['./src/**/*.ts'],
   www: ['./www/**/*']
 };
+var options = {
+  mangle: {
+     except: ['jQuery', 'angular']
+  }
+}
 
-gulp.task('default', ['install-typings','sass','compile','watch','server',]);
+gulp.task('default', ['install-typings','sass','compile','watch','server']);
 
 gulp.task('compile', function() {
   gulp.src(paths.src)
@@ -32,6 +41,26 @@ gulp.task("install-typings",function(){
     var stream = gulp.src("./typings.json")
         .pipe(gulpTypings()); //will install all typingsfiles in pipeline.
     return stream; // by returning stream gulp can listen to events from the stream and knows when it is finished.
+});
+
+gulp.task('vendors', function() {
+
+  var target = gulp.src('www/index.html');
+  // It's not necessary to read the files (will speed up things), we're only after their paths:
+  var sources = gulp.src(bowerFiles(), {base: "www/lib"});
+
+  return target.pipe(inject(sources, {name: 'bower'}, {read: false}), {relative: false})
+    .pipe(gulp.dest('www'));
+
+});
+
+gulp.task('app', function(){
+
+  return gulp.src(paths.src)
+        .pipe(concat('app.js'))
+        .pipe(ngAnnotate())
+        .pipe(uglify())
+        .pipe(gulp.dest('www'));
 });
 
 gulp.task('server', function(){

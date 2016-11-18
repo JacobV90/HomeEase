@@ -56,10 +56,10 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
       }
   })
 
-  .state('tab.myhome', {
-    url: '/myhome',
-    templateUrl: 'templates/myhome.html',
-    controller: 'MyhomeCtrl'
+  .state('favorites', {
+    url: '/favorites',
+    templateUrl: 'templates/favorites.html',
+    controller: 'FavoritePropsCtrl'
   })
 
   .state('tab.myroomies', {
@@ -118,6 +118,13 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
         controller: 'InfoCtrl'
       }
     }
+  })
+
+  .state('map', {
+    url: '/map',
+    templateUrl: 'templates/house-details-map.html',
+    controller: 'MapCtrl',
+    params: {params: null}
   });
 
   $urlRouterProvider.otherwise('/login');

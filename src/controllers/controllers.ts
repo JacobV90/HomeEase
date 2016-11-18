@@ -1,10 +1,11 @@
 angular.module('app.controllers', [ 'ionic', 'firebase'])
 
-  .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal) {
-    $scope.roomies = Roomies.all();
-    $scope.remove = function(roomie) {
-      Roomies.remove(roomie);
-    };
+.controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
+
+  var currentUserString = Storage.getData();
+  var currentUser = JSON.parse(currentUserString);
+  var tenants_ref = firebase.database().ref("Tenants/")
+  $scope.roomies = $firebaseArray(tenants_ref);
 
   $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
           $scope.modalCtrl = modal;
@@ -15,12 +16,17 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   });
 
   $scope.openModal = function(roomie) {
-    $scope.modalData = {"name": roomie.name, "img":roomie.face};
+    $scope.roomie = roomie;
     $scope.modalCtrl.show();
   };
 
   $scope.hideModal = function(){
     $scope.modalCtrl.hide();
+  }
+
+  $scope.add_to_favorites = function(roomie){
+    Tenants.add_to_favorites(currentUser, roomie);
+    $scope.hideModal();
   }
 
   // Cleanup the modal when we're done with it!
@@ -47,10 +53,17 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-  .controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray) {
+  .controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
+
+    var currentUserString = Storage.getData();
+    var currentUser = JSON.parse(currentUserString);
+    var property_ref = firebase.database().ref("Properties/");
+
+    $scope.houses = $firebaseArray(property_ref);
 
     $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
             $scope.modalCtrl = modal;
+
         }, {
             scope: $scope,
             animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
@@ -58,28 +71,83 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           });
 
     $scope.openModal = function(house) {
-      $scope.modalData = house;
+      $scope.property = house;
       $scope.modalCtrl.show();
+
+    };
+
+    $scope.add_to_favorites = function(property){
+      Properties.add_to_favorites(property, currentUser.id);
+      $scope.hideModal();
     };
 
     $scope.hideModal = function(){
       $scope.modalCtrl.hide();
     }
-    var property_ref = firebase.database().ref("Properties/")
 
-    $scope.houses = $firebaseArray(property_ref);
-
-    /*for(var i = 0; i < houses.length; ++i){
-      console.log("Out putting owner info")
-      console.log(houses[i].owner)
-      $scope.owners.push(houses[i].owner);
-    }
-    $scope.houses.each(function(property){
-      console.log(property.owner)
-    })*/
-
+    $scope.openMap = function(house){
+      console.log("hello from map");
+      $scope.map = { center: { latitude: house.lat, longitude: house.long }, zoom: 8 };
+    };
 
     $scope.showFilter=true;
+})
+
+.controller('FavoritePropsCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
+
+  var currentUserString = Storage.getData();
+  var currentUser = JSON.parse(currentUserString);
+  var previous_state;
+
+  var property_ref = firebase.database().ref("Tenants/"+currentUser.id+"/fav_props/");
+
+  $scope.fav_props = $firebaseArray(property_ref);
+
+  $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+    viewData.enableBack = true;
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+      previous_state = from.name;
+
+      console.log(to.name);
+      if(to.name == 'favorites'){
+        $scope.is_favorites = true;
+      }
+      else{
+        $scope.is_favorites = false;
+      }
+
+  });
+
+
+  $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+          $scope.modalCtrl = modal;
+
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+          focusFirstInput: false
+        });
+
+  $scope.openModal = function(house) {
+    $scope.property = house;
+    $scope.modalCtrl.show();
+  };
+
+  $scope.hideModal = function(){
+    $scope.modalCtrl.hide();
+  }
+
+  $scope.goBack = function() {
+    $state.go(previous_state);
+  };
+
+  $scope.apply_for_prop = function(property){
+    Properties.apply(currentUser, property)
+    $scope.hideModal();
+  }
+
 })
 
   .controller('MoneyCtrl', function() {
@@ -99,7 +167,6 @@ this.settings = {
 
   // synchronize the object with a three-way data binding
   // click on `index.html` above to see it used in the DOM!
-
   $scope.logout = function(){
     Auth.$signOut().then(function(){
         $state.go('login');
@@ -108,6 +175,7 @@ this.settings = {
     });
   }
   $scope.profile_pic = "img/terry-crews.jpg";
+
 })
 
 .controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup){
@@ -120,6 +188,7 @@ this.settings = {
         var password = $scope.user.password;
         var first_name = $scope.user.firstName;
         var last_name = $scope.user.lastName;
+        var phone_number = $scope.user.phone_number;
         var imageUrl = null;
 
         console.log("form submitted");
@@ -128,18 +197,16 @@ this.settings = {
           $scope.modal.remove();
           $scope.uploadModal.show();
 
-        /*Auth.$createUserWithEmailAndPassword(email, password)
+        Auth.$createUserWithEmailAndPassword(email, password)
             .then(function(newUser) {
               //$scope.message = "User created with uid: " + firebaseUser.uid;
-              firebase.database().ref('Users/' + newUser.uid).set({
-                firstname: first_name,
-                lastname: last_name,
+              firebase.database().ref('Tenants/' + newUser.uid).set({
+                first_name: first_name,
+                last_name: last_name,
                 email: email,
-                profile_pic : imageUrl
+                profile_pic : imageUrl,
+                phone_number: phone_number
               });;
-              /*list.$add({ firstName: first_name, lastName: last_name, email: email}).then(function(ref) {
-                ref.key = firebaseUser.uid;
-              });
               $scope.modal.remove();
               $scope.uploadModal.show();
             }).catch(function(error) {
@@ -147,7 +214,7 @@ this.settings = {
                 title: 'Sign up error',
                 template: error
               });
-            });*/
+            });
         }else{
           $ionicPopup.alert({
             title: 'Sign up error',
@@ -165,7 +232,7 @@ this.settings = {
 
 })
 
-.controller('UploadCtrl', function($scope, $rootScope, $cordovaImagePicker, $cordovaFile, $ionicPlatform, $q, $timeout){
+.controller('UploadCtrl', function($scope, $rootScope, $window, $cordovaImagePicker, $cordovaFile, $ionicPlatform, $q, $timeout){
 
   $scope.closeUpload = function(){
     $scope.uploadModal.hide();
@@ -255,6 +322,8 @@ this.settings = {
 
         var fileName, path;
 
+        //$cordovaImagePicker.requestReadPermission();
+
         $cordovaImagePicker.getPictures(options)
           .then(function (results) {
             console.log('Image URI: ' + results[0]);
@@ -292,7 +361,7 @@ this.settings = {
         }
 })
 .controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform,
-   $cordovaFacebook, $ionicLoading, $rootScope, $firebaseObject) {
+   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject) {
 
   $scope.fbLogin = function () {
     $cordovaFacebook.getLoginStatus();
@@ -343,18 +412,20 @@ this.settings = {
           Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
           .then(function (authData) {
               console.log("Logged in as:" + authData.uid);
-              var ref = firebase.database().ref('/Users/' + authData.uid);
+              var id = authData.uid;
+              var ref = firebase.database().ref('/Tenants/' + authData.uid);
               var obj = $firebaseObject(ref);
               obj.$loaded().then(function() {
-                $rootScope.user = {
-                  'firstname': obj.firstname,
-                  'lastname': obj.lastname,
-                  'email': obj.email
+                var user = {
+                  'id': id,
+                  'first_name': obj.first_name,
+                  'last_name': obj.last_name,
+                  'email': obj.email,
+                  "phone_number": obj.phone_number
                 };
-                 // To iterate the key/value pairs of the object, use angular.forEach()
-                 /*angular.forEach(obj, function(value, key) {
-                    console.log(key, value);
-                 });*/
+
+                Storage.setData(JSON.stringify(user));
+
                });
               $ionicLoading.hide();
               $state.go('tab.roomies');

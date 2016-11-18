@@ -6,12 +6,16 @@
       <div class="list card">
 
         <div class="item">
-          <h2>{{modalData.name}}</h2>
+          <h2>{{roomie.first_name}} {{roomie.last_name}}</h2>
+          <h3>{{roomie.email}}</h3>
+          <h3>{{roomie.phone_number}}</h3>
         </div>
 
         <div class="item item-body">
-          <img class="full-image" src="{{modalData.img}}">
+          <img class="full-image" src="{{roomie.img}}">
         </div>
+
+        <button class="button button-block button-balanced" ng-click="add_to_favorites(roomie)">Add to favorites</button>
 
       </div>
       <button class="button button-block button-positive" ng-click="hideModal()">Close</button>

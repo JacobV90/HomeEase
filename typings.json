@@ -25,6 +25,7 @@
     "core-js": "registry:dt/core-js#0.0.0+20160725163759",
     "fbsdk": "github:DefinitelyTyped/DefinitelyTyped/fbsdk/fbsdk.d.ts#8eedd1b9f7f009f14435f73c53a88d537c546a02",
     "firebase": "registry:dt/firebase#2.4.1+20160412125105",
+    "google.maps": "registry:dt/google.maps#3.25.0+20161019131407",
     "ionic": "github:DefinitelyTyped/DefinitelyTyped/ionic/ionic.d.ts#14ab703f435375194360cdba3abab61afc879c18",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#17dd34132c2a1a4d6a8bf1816effcff3ec922034",

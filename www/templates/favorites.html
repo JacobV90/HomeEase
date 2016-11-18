@@ -1,0 +1,27 @@
+<ion-view view-title="Favorites">
+
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button class="button-clear" ng-click="goBack()">
+      </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-content>
+      <div class="list card" collection-repeat="house in fav_props" ng-click="openModal(house)">
+       <div class="item item-thumbnail-left">
+         <img ng-src="{{house.img}}" fallback-src="img/blankHouse.png">
+         <h2><b>{{house.owner.email}}</b></h2>
+         <h2>{{house.street}}</h2>
+         <h2>{{house.city}}, {{house.state}}</h2>
+       </div>
+
+       <div class="item item-divider">
+         <p>
+           ${{house.price}} per month<br>
+           Bedrooms: {{house.bedrooms}}<br>
+           Bathrooms: {{house.bathrooms}}
+         </p>
+       </div>
+
+     </div>
+  </ion-content>
+</ion-view>
