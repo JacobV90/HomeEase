@@ -123,14 +123,12 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
       previous_state = from.name;
 
-      console.log(to.name);
       if(to.name == 'favs.homes' || to.name == 'favs.roomies'){
         $scope.is_favorites = true;
       }
       else{
         $scope.is_favorites = false;
       }
-      console.log($scope.is_favorites);
 
   });
 
@@ -176,9 +174,10 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   };
 
   $scope.apply_for_prop = function(property){
-    console.log(currentUser);
+
+    console.log(currentUser.tenant_id + "is appling for a prop");
     Properties.apply(currentUser, property)
-    $scope.hideModal();
+    $scope.hideHome();
   }
 
 })
@@ -195,7 +194,7 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, Auth, $state, Storage, $window) {
+.controller('SideMenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window) {
 
   var currentUser = Storage.getData('user');
 
@@ -214,7 +213,7 @@ this.settings = {
 
     });
   }
-  $scope.profile_pic = "img/terry-crews.jpg";
+  $scope.profile_pic = $rootScope.profile_pic;
 
   $scope.go_to_favs = function(){
     $state.go('favs.homes');
@@ -233,7 +232,11 @@ this.settings = {
         var first_name = $scope.user.firstName;
         var last_name = $scope.user.lastName;
         var phone_number = $scope.user.phone_number;
-        var imageUrl = null;
+        var image_url = "";
+
+        if(image_url == ""){
+          image_url = "https://firebasestorage.googleapis.com/v0/b/home-ease.appspot.com/o/images%2Fdefault_avatar.png?alt=media&token=b03e9544-42fa-4029-8065-aa774ac0113e";
+        }
 
         console.log("form submitted");
 
@@ -248,7 +251,7 @@ this.settings = {
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
-                profile_pic : imageUrl,
+                profile_pic : image_url,
                 phone_number: phone_number
               });;
               $scope.modal.remove();
@@ -403,22 +406,40 @@ this.settings = {
 
         }
 })
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform,
-   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject) {
+.controller('LoginCtrl',  function ($scope, $rootScope,$ionicModal, $state, $log, Auth, $ionicPlatform,
+   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject, Tenants) {
 
-  $scope.fbLogin = function () {
-    $cordovaFacebook.getLoginStatus();
-    $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-    .then(function(success) {
-      // { id: "634565435",
-      //   lastName: "bob"
-      //   ...
-      // }
-      alert(success.first_name);
-      $state.go('tab.roomies');
-    }, function (error) {
-      $log.log("fuck my life");
+     $scope.fbLogin = function () {
+
+      $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+      .then(function(success) {
+        console.log("facebook login success: " + success.authResponse.userID);
+      }, function (error) {
+        alert(error)
+      });
+
+      $cordovaFacebook.api('me?fields=id,first_name,last_name,picture,email', ["public_profile"]).then(function(response){
+        console.log("hello from facebook")
+        if (response && !response.error) {
+          console.log(response.first_name);
+          var user = {
+            'tenant_id': response.id,
+            'first_name': response.first_name,
+            'last_name': response.last_name,
+            'email': response.email,
+            'phone_number': "",
+            'picture': response.picture.data.url
+          }
+          console.log(JSON.stringify(user));
+          Tenants.add_to_firebase(user);
+          Storage.setData('user', user);
+          $rootScope.profile_pic = response.picture.data.url;
+          $state.go('tab.roomies');
+        }
+    }, function(error){
+      alert(error);
     });
+
     $scope.image_src = 'img/homeas.jpg';
   };
 
@@ -464,7 +485,7 @@ this.settings = {
                   'first_name': obj.first_name,
                   'last_name': obj.last_name,
                   'email': obj.email,
-                  "phone_number": obj.phone_number
+                  "phone_number": obj.phone_number,
                 };
                 Storage.setData('user', user);
                 $ionicLoading.hide();

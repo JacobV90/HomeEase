@@ -2,7 +2,7 @@
   <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roomie in roomies" type="item-text-wrap" ng-click="openModal(roomie)">
-        <img ng-src="{{roomie.face}}">
+        <img ng-src="{{roomie.picture}}">
         <h2>{{roomie.first_name}} {{roomie.last_name}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
         <ion-option-button class="button-assertive" ng-click="remove(chat)">

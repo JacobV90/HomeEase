@@ -109,7 +109,7 @@ angular.module('app.services', ['firebase'])
   return {
       add_to_favorites: function(tenant, roomie){
         firebase.database().ref("Tenants/"+tenant.tenant_id
-          +"/fav_roomies/"+roomie.$id+"/").set({
+          +"/fav_roomies/"+roomie.$id+"/").update({
             tenant_id: roomie.$id,
             first_name: roomie.first_name,
             last_name: roomie.last_name,
@@ -118,12 +118,13 @@ angular.module('app.services', ['firebase'])
         });
       },
       add_to_firebase: function(tenant){
-        firebase.database().ref("Tenants/"+tenant.$id+"/").set({
+        firebase.database().ref("Tenants/"+tenant.tenant_id+"/").update({
             tenant_id: tenant.tenant_id,
             first_name: tenant.first_name,
             last_name: tenant.last_name,
             email: tenant.email,
-            phone_number: tenant.phone_number
+            phone_number: tenant.phone_number,
+            picture: tenant.picture
         });
       }
   }
