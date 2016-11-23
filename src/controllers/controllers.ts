@@ -2,13 +2,23 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
 
-  var currentUserString = Storage.getData();
-  var currentUser = JSON.parse(currentUserString);
+  var currentUser = Storage.getData('user');
   var tenants_ref = firebase.database().ref("Tenants/")
-  $scope.roomies = $firebaseArray(tenants_ref);
+  var roomies = $firebaseArray(tenants_ref);
+
+  //remove current user from room mate listing
+  roomies.$loaded().then(function() {
+    for(var i = 0; i < roomies.length; ++i){
+      if(roomies[i].email == currentUser.email){
+        roomies.splice(i, 1);
+      }
+    }
+    $scope.roomies = roomies;
+  });
 
   $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
           $scope.modalCtrl = modal;
+
       }, {
           scope: $scope,
           animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
@@ -25,6 +35,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   }
 
   $scope.add_to_favorites = function(roomie){
+    console.log(roomie);
     Tenants.add_to_favorites(currentUser, roomie);
     $scope.hideModal();
   }
@@ -55,8 +66,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   .controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
 
-    var currentUserString = Storage.getData();
-    var currentUser = JSON.parse(currentUserString);
+    var currentUser = Storage.getData('user');
     var property_ref = firebase.database().ref("Properties/");
 
     $scope.houses = $firebaseArray(property_ref);
@@ -77,7 +87,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     };
 
     $scope.add_to_favorites = function(property){
-      Properties.add_to_favorites(property, currentUser.id);
+      Properties.add_to_favorites(property, currentUser.tenant_id);
       $scope.hideModal();
     };
 
@@ -86,22 +96,25 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     }
 
     $scope.openMap = function(house){
-      console.log("hello from map");
       $scope.map = { center: { latitude: house.lat, longitude: house.long }, zoom: 8 };
     };
 
     $scope.showFilter=true;
 })
+.controller('FavoriteRoomieCtrl', function(){
 
-.controller('FavoritePropsCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
 
-  var currentUserString = Storage.getData();
-  var currentUser = JSON.parse(currentUserString);
+
+})
+.controller('FavoritesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
+
+  var currentUser = Storage.getData('user');
   var previous_state;
 
-  var property_ref = firebase.database().ref("Tenants/"+currentUser.id+"/fav_props/");
-
-  $scope.fav_props = $firebaseArray(property_ref);
+  var fav_prop_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_props/");
+  var fav_roomie_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_roomies/");
+  $scope.fav_props = $firebaseArray(fav_prop_ref);
+  $scope.fav_roomies = $firebaseArray(fav_roomie_ref);
 
   $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
     viewData.enableBack = true;
@@ -111,39 +124,59 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
       previous_state = from.name;
 
       console.log(to.name);
-      if(to.name == 'favorites'){
+      if(to.name == 'favs.homes' || to.name == 'favs.roomies'){
         $scope.is_favorites = true;
       }
       else{
         $scope.is_favorites = false;
       }
+      console.log($scope.is_favorites);
 
   });
 
-
-  $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
-          $scope.modalCtrl = modal;
+  $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
+          $scope.roomieDetailsCtrl = modal;
 
       }, {
           scope: $scope,
           animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
           focusFirstInput: false
-        });
+  });
 
-  $scope.openModal = function(house) {
+  $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+          $scope.homeDetailsCtrl = modal;
+
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+          focusFirstInput: false
+  });
+
+
+  $scope.viewHome = function(house) {
     $scope.property = house;
-    $scope.modalCtrl.show();
+    $scope.homeDetailsCtrl.show();
   };
 
-  $scope.hideModal = function(){
-    $scope.modalCtrl.hide();
+  $scope.hideHome = function(){
+    $scope.homeDetailsCtrl.hide();
+  }
+
+  $scope.viewRoomie = function(roomie) {
+    $scope.roomie = roomie;
+    $scope.roomieDetailsCtrl.show();
+  };
+
+  $scope.hideRoomie = function(){
+    $scope.roomieDetailsCtrl.hide();
   }
 
   $scope.goBack = function() {
-    $state.go(previous_state);
+    $state.go("tab.housing");
   };
 
   $scope.apply_for_prop = function(property){
+    console.log(currentUser);
     Properties.apply(currentUser, property)
     $scope.hideModal();
   }
@@ -162,13 +195,20 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate, $rootScope, Auth, $state, $firebaseObject) {
+.controller('SideMenuCtrl', function($scope, Auth, $state, Storage, $window) {
 
+  var currentUser = Storage.getData('user');
 
-  // synchronize the object with a three-way data binding
-  // click on `index.html` above to see it used in the DOM!
+  if (currentUser != null){
+    $scope.first_name = currentUser.first_name;
+    $scope.last_name = currentUser.last_name;
+    $scope.email = currentUser.email;
+  }
+
   $scope.logout = function(){
     Auth.$signOut().then(function(){
+        Storage.clearData('user');
+        $window.location.reload(true)
         $state.go('login');
     }, function(error){
 
@@ -176,9 +216,13 @@ this.settings = {
   }
   $scope.profile_pic = "img/terry-crews.jpg";
 
+  $scope.go_to_favs = function(){
+    $state.go('favs.homes');
+  }
+
 })
 
-.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup){
+.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup, Tenants){
 
   $scope.createUser = function(signupForm){
 
@@ -228,7 +272,6 @@ this.settings = {
     $scope.showLogin = function(){
       $scope.modal.hide();
     }
-
 
 })
 
@@ -417,18 +460,16 @@ this.settings = {
               var obj = $firebaseObject(ref);
               obj.$loaded().then(function() {
                 var user = {
-                  'id': id,
+                  'tenant_id': id,
                   'first_name': obj.first_name,
                   'last_name': obj.last_name,
                   'email': obj.email,
                   "phone_number": obj.phone_number
                 };
-
-                Storage.setData(JSON.stringify(user));
-
+                Storage.setData('user', user);
+                $ionicLoading.hide();
+                $state.go('tab.roomies', {reload: true});
                });
-              $ionicLoading.hide();
-              $state.go('tab.roomies');
           }).catch(function (error) {
               alert("Authentication failed:" + error.message);
               $ionicLoading.hide();

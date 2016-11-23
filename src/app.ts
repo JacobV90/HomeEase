@@ -56,10 +56,40 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
       }
   })
 
-  .state('favorites', {
+  .state('favs', {
     url: '/favorites',
+    abstract: true,
     templateUrl: 'templates/favorites.html',
-    controller: 'FavoritePropsCtrl'
+    controller: 'FavoritesCtrl',
+    resolve: {
+        // controller will not be loaded until $requireSignIn resolves
+        // Auth refers to our $firebaseAuth wrapper in the factory below
+        "currentAuth": ["Auth", function(Auth) {
+          // $requireSignIn returns a promise so the resolve waits for it to complete
+          // If the promise is rejected, it will throw a $stateChangeError (see above)
+          return Auth.$requireSignIn();
+        }]
+      }
+  })
+
+  .state('favs.homes', {
+    url: '/homes',
+    views: {
+      'favs-homes': {
+        templateUrl: 'templates/favorites-homes.html',
+        controller: 'FavoritesCtrl'
+      }
+    }
+  })
+
+  .state('favs.roomies', {
+    url: '/roomies',
+    views: {
+      'favs-roomies': {
+        templateUrl: 'templates/favorites-roomies.html',
+        controller: 'FavoritesCtrl'
+      }
+    }
   })
 
   .state('tab.myroomies', {

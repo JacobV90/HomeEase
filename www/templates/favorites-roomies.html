@@ -1,0 +1,14 @@
+<ion-view view-title="Favorite Roomies">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roomie in fav_roomies" type="item-text-wrap" ng-click="viewRoomie(roomie)">
+        <img ng-src="{{roomie.face}}">
+        <h2>{{roomie.first_name}} {{roomie.last_name}}</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+        <ion-option-button class="button-assertive" ng-click="remove(chat)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

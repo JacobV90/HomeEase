@@ -55,17 +55,22 @@ angular.module('app.services', ['firebase'])
 }])
 .factory("Storage", function($window, $rootScope) {
   angular.element($window).on('storage', function(event) {
-    if (event.key === 'my-storage') {
+    if (event.key === 'user') {
       $rootScope.$apply();
     }
   });
   return {
-    setData: function(val) {
-      $window.localStorage && $window.localStorage.setItem('my-storage', val);
+    setData: function(entry, val) {
+      $window.localStorage.setItem(entry, JSON.stringify(val));
       return this;
     },
-    getData: function() {
-      return $window.localStorage && $window.localStorage.getItem('my-storage');
+    getData: function(entry) {
+      return JSON.parse($window.localStorage.getItem(entry));
+    },
+    clearData: function(entry){
+      $window.localStorage.removeItem(entry);
+      console.log($window.localStorage.getItem(entry));
+      return this
     }
   };
 })
@@ -90,14 +95,12 @@ angular.module('app.services', ['firebase'])
     },
     apply: function(tenant, property){
       firebase.database().ref("Owners/"+property.owner.owner_id
-        +"/Properties/"+property.prop_id+"/Applicants/"+tenant.tenant_id).set({
-
+        +"/properties/"+property.prop_id+"/Applicants/"+tenant.tenant_id+'/').set({
         tenant_id: tenant.tenant_id,
         first_name: tenant.first_name,
         last_name: tenant.last_name,
         email: tenant.email,
         phone_number: tenant.phone_number
-
       });
     }
   }
@@ -106,8 +109,8 @@ angular.module('app.services', ['firebase'])
   return {
       add_to_favorites: function(tenant, roomie){
         firebase.database().ref("Tenants/"+tenant.tenant_id
-          +"/fav_roomies/"+roomie.tenant_id+"/").set({
-            tenant_id: roomie.tenant_id,
+          +"/fav_roomies/"+roomie.$id+"/").set({
+            tenant_id: roomie.$id,
             first_name: roomie.first_name,
             last_name: roomie.last_name,
             email: roomie.email,
@@ -115,7 +118,7 @@ angular.module('app.services', ['firebase'])
         });
       },
       add_to_firebase: function(tenant){
-        firebase.database().ref("Tenants/"+tenant.tenant_id+"/").set({
+        firebase.database().ref("Tenants/"+tenant.$id+"/").set({
             tenant_id: tenant.tenant_id,
             first_name: tenant.first_name,
             last_name: tenant.last_name,

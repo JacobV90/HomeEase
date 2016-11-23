@@ -12,14 +12,14 @@ navigation history that also transitions its views in and out.
 
       <a class="item item-thumbnail-left profile-header">
         <img src="{{profile_pic}}">
-        <h2>{{user.firstname}} {{user.lastname}}</h2>
-        <h2>{{user.email}}</h2>
+        <h2>{{first_name}} {{last_name}}</h2>
+        <h2>{{email}}</h2>
       </a>
 
-      <a href="#/favorites" class="item item-icon-left office-task-filter" >
+      <span class="item item-icon-left office-task-filter" ng-click="go_to_favs()" >
         <i class="icon ion-ios-star"></i>
         Favorites
-      </a>
+      </span>
 
       <a href="myroomies" class="item item-icon-left office-task-filter">
         <i class="icon ion-person-stalker"></i>
