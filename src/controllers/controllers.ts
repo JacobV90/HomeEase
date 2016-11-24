@@ -1,5 +1,9 @@
 angular.module('app.controllers', [ 'ionic', 'firebase'])
 
+.controller('AboutCtrl', function($scope){
+
+})
+
 .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
 
   var currentUser = Storage.getData('user');
@@ -64,14 +68,14 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-  .controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
+.controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
 
     var currentUser = Storage.getData('user');
     var property_ref = firebase.database().ref("Properties/");
 
     $scope.houses = $firebaseArray(property_ref);
 
-    $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+    $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
             $scope.modalCtrl = modal;
 
         }, {
@@ -101,11 +105,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
     $scope.showFilter=true;
 })
-.controller('FavoriteRoomieCtrl', function(){
 
-
-
-})
 .controller('FavoritesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
 
   var currentUser = Storage.getData('user');
@@ -141,7 +141,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           focusFirstInput: false
   });
 
-  $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+  $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
           $scope.homeDetailsCtrl = modal;
 
       }, {
@@ -194,7 +194,7 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window) {
+.controller('MenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window) {
 
   var currentUser = Storage.getData('user');
 
@@ -486,10 +486,11 @@ this.settings = {
                   'last_name': obj.last_name,
                   'email': obj.email,
                   "phone_number": obj.phone_number,
+                  "picture": obj.picture
                 };
                 Storage.setData('user', user);
                 $ionicLoading.hide();
-                $state.go('tab.roomies', {reload: true});
+                $state.go('menu.search.homes');
                });
           }).catch(function (error) {
               alert("Authentication failed:" + error.message);

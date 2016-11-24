@@ -41,120 +41,76 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     controller: 'LoginCtrl'
   })
 
-  .state('tab', {
-    url: '/tab',
+  .state('menu', {
+    url: '/menu',
+    templateUrl: 'templates/menu.html',
     abstract: true,
-    templateUrl: 'templates/tabs.html',
+    controller: 'MenuCtrl',
     resolve: {
-        // controller will not be loaded until $requireSignIn resolves
-        // Auth refers to our $firebaseAuth wrapper in the factory below
+
         "currentAuth": ["Auth", function(Auth) {
-          // $requireSignIn returns a promise so the resolve waits for it to complete
-          // If the promise is rejected, it will throw a $stateChangeError (see above)
+
           return Auth.$requireSignIn();
         }]
       }
   })
 
-  .state('favs', {
+  .state('menu.favorites', {
     url: '/favorites',
-    abstract: true,
-    templateUrl: 'templates/favorites.html',
-    controller: 'FavoritesCtrl',
-    resolve: {
-        // controller will not be loaded until $requireSignIn resolves
-        // Auth refers to our $firebaseAuth wrapper in the factory below
-        "currentAuth": ["Auth", function(Auth) {
-          // $requireSignIn returns a promise so the resolve waits for it to complete
-          // If the promise is rejected, it will throw a $stateChangeError (see above)
-          return Auth.$requireSignIn();
-        }]
+    views:{
+      'menu':{
+        templateUrl: 'templates/favorites.html',
       }
+    }
   })
 
-  .state('favs.homes', {
+  .state('menu.favorites.homes', {
     url: '/homes',
     views: {
-      'favs-homes': {
-        templateUrl: 'templates/favorites-homes.html',
+      'favorite-homes': {
+        templateUrl: 'templates/favorite-homes.html',
         controller: 'FavoritesCtrl'
       }
     }
   })
 
-  .state('favs.roomies', {
+  .state('menu.favorites.roomies', {
     url: '/roomies',
     views: {
-      'favs-roomies': {
-        templateUrl: 'templates/favorites-roomies.html',
+      'favorite-roomies': {
+        templateUrl: 'templates/favorite-roomies.html',
         controller: 'FavoritesCtrl'
       }
     }
   })
 
-  .state('tab.myroomies', {
-    url: '/myroomies',
-    templateUrl: 'templates/myroomeis.html',
-    controller: 'MyroomiesCtrl'
+  .state('menu.search', {
+    url: '/search',
+    views:{
+      'menu':{
+        templateUrl: 'templates/search.html',
+      }
+    }
   })
 
-  .state('tab.mybank ', {
-    url: '/mybank',
-    templateUrl: 'templates/mybank.html',
-    controller: 'MybankCtrl'
+  .state('menu.search.homes', {
+    url: '/homes',
+    views:{
+      'search-homes':{
+        templateUrl: 'templates/search-homes.html',
+        controller: 'HousingCtrl'
+      }
+    }
   })
 
-  .state('tab.mydocuments', {
-    url: '/mydocuments',
-    templateUrl: 'templates/mydocuments.html',
-    controller: 'MydocCtrl'
-  })
-
-  .state('tab.roomies', {
+  .state('menu.search.roomies', {
     url: '/roomies',
-    views: {
-      'tab-roomies': {
-        templateUrl: 'templates/tab-roomies.html',
+    views:{
+      'search-roomies':{
+        templateUrl: 'templates/search-roomies.html',
         controller: 'RoomiesCtrl'
       }
     }
-  })
-
-  .state('tab.housing', {
-      url: '/housing',
-      views: {
-        'tab-housing': {
-          templateUrl: 'templates/tab-housing.html',
-          controller: 'HousingCtrl'
-        }
-      }
-    })
-
-    .state('tab.money', {
-      url: '/money',
-      views: {
-        'tab-money': {
-          templateUrl: 'templates/tab-money.html',
-          controller: 'MoneyCtrl as money'
-        }
-      }
-    })
-
-  .state('tab.info', {
-    url: '/info',
-    views: {
-      'tab-info': {
-        templateUrl: 'templates/tab-info.html',
-        controller: 'InfoCtrl'
-      }
-    }
-  })
-
-  .state('map', {
-    url: '/map',
-    templateUrl: 'templates/house-details-map.html',
-    controller: 'MapCtrl',
-    params: {params: null}
   });
 
   $urlRouterProvider.otherwise('/login');

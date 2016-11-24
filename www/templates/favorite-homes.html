@@ -1,0 +1,37 @@
+<ion-view view-title="Favorite Homes">
+  <ion-nav-buttons side="left">
+
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <div class="list card" collection-repeat="house in fav_props" ng-click="viewHome(house)">
+     <div class="item item-thumbnail-left">
+       <img ng-src="{{house.img}}" fallback-src="img/blankHouse.png">
+       <div class = 'prop-address'>
+         <h2>{{house.street}}</h2>
+         <h2>{{house.city}}, {{house.state}} {{house.zipcode}}</h2>
+       </div>
+     </div>
+
+     <div class="item item-divider">
+       <p>
+         ${{house.price}} per month<br>
+         Bedrooms: {{house.bedrooms}}<br>
+         Bathrooms: {{house.bathrooms}}
+       </p>
+     </div>
+
+    </div>
+  </ion-content>
+
+  <div class="tabs tabs-icon-only">
+        <a nav-clear class="tab-item disable-user-behavior" title="Home" nav-clear ui-sref="menu.favorite-homes">
+          <i class="icon ion-home"></i><span class="tab-title ng-binding" ng-bind-html="title"></span>
+        </a>
+        <a nav-clear class="tab-item disable-user-behavior active" title="Chat" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline" ui-sref="menu.favorite-roomies">
+          <i class="icon ion-chatbubbles"></i><span class="tab-title ng-binding" ng-bind-html="title"></span>
+        </a>
+  </div>
+
+</ion-view>

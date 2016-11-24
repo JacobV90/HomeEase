@@ -1,0 +1,75 @@
+<!--
+Create tabs with an icon and label, using the tabs-positive style.
+Each tab's child <ion-nav-view> directive will have its own
+navigation history that also transitions its views in and out.
+-->
+
+<ion-side-menus>
+
+  <ion-pane ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="menu" animation="slide-left-right"></ion-nav-view>
+  </ion-pane>
+
+  <ion-side-menu side="left">
+
+    <ion-content >
+      <ion-list>
+
+        <ion-item nav-clear menu-close >
+
+            <img ng-src="{{profile_pic}}">
+            <h2>{{first_name}} {{last_name}}</h2>
+            <h2>{{email}}</h2>
+
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/menu/search/homes">
+            <i class="icon ion-ios-paper"></i>
+            Search
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/menu/favorites/homes">
+          <span ng-click="go_to_favs()" >
+            <i class="icon ion-ios-star"></i>
+            Favorites
+          </span>
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#">
+            <i class="icon ion-home"></i>
+            Home
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/money">
+            <i class="icon ion-social-usd"></i>
+            Money
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#">
+            <i class="icon ion-ios-paper"></i>
+            Documents
+        </ion-item>
+
+        <ion-item nav-clear menu-close>
+            <i class="icon ion-ios-gear-outline"></i>
+            Settings
+        </ion-item>
+
+        <ion-item nav-clear menu-close>
+            <i class="icon ion-log-out"></i>
+            Log Out
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/app/about">
+            <i class="icon ion-ios-gear-outline"></i>
+            About
+        </ion-item>
+
+      </ion-list>
+    </ion-content>
+
+  </ion-side-menu>
+</ion-side-menus>
