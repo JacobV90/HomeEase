@@ -4,14 +4,21 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="Housing">
-  <ion-content class="padding">
-    <div class="list card" ng-repeat="house in houses" ng-click="openModal(house)">
+<ion-view view-title="Search Homes">
+  <ion-nav-buttons side="left">
+
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+
+      </ion-nav-buttons>
+  <ion-content has-header="true">
+
+    <div class="list card" collection-repeat="house in houses" ng-click="openModal(house)">
      <div class="item item-thumbnail-left">
        <img ng-src="{{house.img}}" fallback-src="img/blankHouse.png">
-       <h2><b>{{house.owner}}</b></h2>
-       <h2>{{house.street}}</h2>
-       <h2>{{house.city}}, {{house.state}}</h2>
+       <div class = 'prop-address'>
+         <h2>{{house.street}}</h2>
+         <h2>{{house.city}}, {{house.state}} {{house.zipcode}}</h2>
+       </div>
      </div>
 
      <div class="item item-divider">
@@ -24,4 +31,5 @@
 
    </div>
   </ion-content>
+
 </ion-view>

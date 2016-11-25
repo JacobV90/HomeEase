@@ -103,7 +103,6 @@ $green: #9BC995;
 }
 
 .profile-header{
-  height: 25vh;
   border: none!important;
   background-color: $green!important;
 }
@@ -130,3 +129,22 @@ $green: #9BC995;
   content: url('../img/LinkedIn-Logo.png');
   width: 40px;
 }
+
+.map-icon {
+  background-color: rgba(0,0,0,0);
+}
+
+.scroll {
+    height: 100%;
+}
+
+.item-profile {
+
+  .item-avatar > img:first-child {
+    max-width: 75px;
+    max-height: 75px;
+    margin-bottom: 10px;
+  }
+}
+
+.angular-google-map-container { height: 400px; }

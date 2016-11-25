@@ -1,0 +1,77 @@
+<ion-modal-view >
+  <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">Details</h1>
+    </ion-header-bar>
+    <ion-content >
+      <div class="list card">
+
+        <div class="item item-body">
+          <img class="full-image" ng-if="property.img==null" src="img/blankHouse.png">
+          <img class="full-image" ng-if="property.img!=null" ng-src="{{property.img}}">
+        </div>
+
+        <div class="item item-divider">
+          <div class="frow" >
+            <div class="col-xs-10-12">
+              <p>
+                {{property.street}}<br>
+                {{property.city}}, {{property.state}} {{property.zipCode}}<br>
+              </p>
+            </div>
+            <div class="col-xs-2-12 " >
+              <a class="button button-icon icon ion-map" ng-click="openMap()"></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <p>
+            ${{property.price}} per month<br>
+            Bedrooms: {{property.bedrooms}}<br>
+            Bathrooms: {{property.bathrooms}}<br>
+            Amenities: {{property.amenities}}<br>
+            Description: <div><p>{{property.description}}</p></div>
+          </p>
+        </div>
+
+        <div class="item">
+          <h3>Contact information</h3>
+          <p>
+            {{property.owner.first_name}} {{property.owner.last_name}}<br>
+            Email: {{property.owner.email}}<br>
+            Number: {{property.owner.phone_number}}<br>
+          </p>
+        </div>
+
+        <div class="item item-divider">
+          <div class="frow justify-around" >
+            <div >
+              <a class="button button-icon icon ion-ios-telephone"></a>
+            </div>
+            <div  >
+              <a class="button button-icon icon ion-android-textsms"></a>
+            </div>
+            <div  >
+              <a class="button button-icon icon ion-calendar"></a>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="is_favorites">
+          <button class="button button-full button-assertive">Remove</button>
+          <button class="button button-block button-positive" ng-click="hideHome()">Close</button>
+        </div>
+
+        <div ng-if="!is_favorites">
+          <button class="button button-block button-balanced" ng-click="add_to_favorites(property)">Add to favorites</button>
+          <button class="button button-block button-positive" ng-click="hideModal()">Close</button>
+        </div>
+
+        <button class="button button-full button-balanced" ng-click="apply_for_prop(property)">Apply</button>
+
+      </div>
+
+
+
+    </ion-content>
+</ion-modal-view>

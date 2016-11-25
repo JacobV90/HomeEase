@@ -29,6 +29,12 @@
                 <label>Email</label>
           <input type="email" name="email" ng-model="user.email" required>
         </ion-input>
+        <ion-input class="item item-input item-stacked-label"
+          ng-class="{ 'has-errors' : signupForm.phonenumber.$invalid ,
+                'no-errors' : signupForm.phonenumber.$valid}">
+          <label>Phone Number</label>
+          <input type="tel" name="phonenumber"  ng-model="user.phone_number" required>
+        </ion-input>
         <ion-checkbox ng-model="isChecked">I am over the age of 18</ion-checkbox>
         <ion-input class="item-input padding">
           <input type="submit" class="button button-balanced" value="Submit"

@@ -25,7 +25,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     link: function(scope, element, attrs){
       element.attr('src', attrs.fallbackSrc);
 			element.bind('error', function(){
-				element.attr('src', attrs.fallbackSrc);
+			     element.attr('src', attrs.fallbackSrc);
 			});
     }
   };
@@ -41,84 +41,119 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     controller: 'LoginCtrl'
   })
 
-  .state('tab', {
-    url: '/tab',
+  .state('menu', {
+    url: '/menu',
+    templateUrl: 'templates/menu.html',
     abstract: true,
-    templateUrl: 'templates/tabs.html',
+    controller: 'MenuCtrl',
     resolve: {
-        // controller will not be loaded until $requireSignIn resolves
-        // Auth refers to our $firebaseAuth wrapper in the factory below
+
         "currentAuth": ["Auth", function(Auth) {
-          // $requireSignIn returns a promise so the resolve waits for it to complete
-          // If the promise is rejected, it will throw a $stateChangeError (see above)
+
           return Auth.$requireSignIn();
         }]
       }
   })
 
-  .state('tab.myhome', {
-    url: '/myhome',
-    templateUrl: 'templates/myhome.html',
-    controller: 'MyhomeCtrl'
+  .state('menu.favorites', {
+    url: '/favorites',
+    abstract: true,
+    views:{
+      'menu':{
+        templateUrl: 'templates/favorites.html',
+      }
+    }
   })
 
-  .state('tab.myroomies', {
-    url: '/myroomies',
-    templateUrl: 'templates/myroomeis.html',
-    controller: 'MyroomiesCtrl'
+  .state('menu.favorites.homes', {
+    url: '/homes',
+    views: {
+      'favorite-homes': {
+        templateUrl: 'templates/favorite-homes.html',
+        controller: 'FavoritesCtrl'
+      }
+    }
   })
 
-  .state('tab.mybank ', {
-    url: '/mybank',
-    templateUrl: 'templates/mybank.html',
-    controller: 'MybankCtrl'
-  })
-
-  .state('tab.mydocuments', {
-    url: '/mydocuments',
-    templateUrl: 'templates/mydocuments.html',
-    controller: 'MydocCtrl'
-  })
-
-  .state('tab.roomies', {
+  .state('menu.favorites.roomies', {
     url: '/roomies',
     views: {
-      'tab-roomies': {
-        templateUrl: 'templates/tab-roomies.html',
+      'favorite-roomies': {
+        templateUrl: 'templates/favorite-roomies.html',
+        controller: 'FavoritesCtrl'
+      }
+    }
+  })
+
+  .state('menu.search', {
+    url: '/search',
+    abstract: true,
+    views:{
+      'menu':{
+        templateUrl: 'templates/search.html',
+      }
+    }
+  })
+
+  .state('menu.search.homes', {
+    url: '/homes',
+    views:{
+      'search-homes':{
+        templateUrl: 'templates/search-homes.html',
+        controller: 'HousingCtrl'
+      }
+    }
+  })
+
+  .state('menu.search.roomies', {
+    url: '/roomies',
+    views:{
+      'search-roomies':{
+        templateUrl: 'templates/search-roomies.html',
         controller: 'RoomiesCtrl'
       }
     }
   })
 
-  .state('tab.housing', {
-      url: '/housing',
-      views: {
-        'tab-housing': {
-          templateUrl: 'templates/tab-housing.html',
-          controller: 'HousingCtrl'
-        }
+  .state('menu.about', {
+    url: '/about',
+    views:{
+      'menu':{
+        templateUrl: 'templates/about.html',
+        controller: 'AboutCtrl'
       }
-    })
+    }
+  })
 
-    .state('tab.money', {
-      url: '/money',
-      views: {
-        'tab-money': {
-          templateUrl: 'templates/tab-money.html',
-          controller: 'MoneyCtrl as money'
-        }
+  .state('menu.documents', {
+    url: '/documents',
+    views:{
+      'menu':{
+        templateUrl: 'templates/documents.html',
+        controller: 'DocumentCtrl'
       }
-    })
+    }
+  })
 
-  .state('tab.info', {
-    url: '/info',
-    views: {
-      'tab-info': {
-        templateUrl: 'templates/tab-info.html',
-        controller: 'InfoCtrl'
+  .state('menu.money', {
+    url: '/money',
+    views:{
+      'menu':{
+        templateUrl: 'templates/money.html',
+        controller: 'MoneyCtrl'
+      }
+    }
+  })
+  .state('menu.settings', {
+    url: '/settings',
+    views:{
+      'menu':{
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
       }
     }
   });
+
 
   $urlRouterProvider.otherwise('/login');
 

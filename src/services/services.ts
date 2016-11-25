@@ -52,4 +52,80 @@ angular.module('app.services', ['firebase'])
 .factory("Auth", ["$firebaseAuth", "$rootScope",
          function ($firebaseAuth) {
             return $firebaseAuth();
-    }]);
+}])
+.factory("Storage", function($window, $rootScope) {
+  angular.element($window).on('storage', function(event) {
+    if (event.key === 'user') {
+      $rootScope.$apply();
+    }
+  });
+  return {
+    setData: function(entry, val) {
+      $window.localStorage.setItem(entry, JSON.stringify(val));
+      return this;
+    },
+    getData: function(entry) {
+      return JSON.parse($window.localStorage.getItem(entry));
+    },
+    clearData: function(entry){
+      $window.localStorage.removeItem(entry);
+      console.log($window.localStorage.getItem(entry));
+      return this
+    }
+  };
+})
+.factory("Properties", function($firebaseArray){
+  return {
+    add_to_favorites: function(property, tenant_id){
+      firebase.database().ref("Tenants/"+tenant_id+"/fav_props/"+property.prop_id+"/").set({
+          street: property.street,
+          city: property.city,
+          state: property.street,
+          bathrooms: property.bathrooms,
+          bedrooms: property.bedrooms,
+          amenities: property.amenities,
+          description: property.description,
+          price: property.price,
+          owner: property.owner,
+          zipcode: property.zipcode,
+          prop_id: property.prop_id,
+          lat: "",
+          long: "",
+      });
+    },
+    apply: function(tenant, property){
+      firebase.database().ref("Owners/"+property.owner.owner_id
+        +"/properties/"+property.prop_id+"/Applicants/"+tenant.tenant_id+'/').set({
+        tenant_id: tenant.tenant_id,
+        first_name: tenant.first_name,
+        last_name: tenant.last_name,
+        email: tenant.email,
+        phone_number: tenant.phone_number
+      });
+    }
+  }
+})
+.factory("Tenants", function($firebaseArray){
+  return {
+      add_to_favorites: function(tenant, roomie){
+        firebase.database().ref("Tenants/"+tenant.tenant_id
+          +"/fav_roomies/"+roomie.$id+"/").update({
+            tenant_id: roomie.$id,
+            first_name: roomie.first_name,
+            last_name: roomie.last_name,
+            email: roomie.email,
+            phone_number: roomie.phone_number
+        });
+      },
+      add_to_firebase: function(tenant){
+        firebase.database().ref("Tenants/"+tenant.tenant_id+"/").update({
+            tenant_id: tenant.tenant_id,
+            first_name: tenant.first_name,
+            last_name: tenant.last_name,
+            email: tenant.email,
+            phone_number: tenant.phone_number,
+            picture: tenant.picture
+        });
+      }
+  }
+});

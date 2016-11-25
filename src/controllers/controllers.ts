@@ -1,13 +1,40 @@
 angular.module('app.controllers', [ 'ionic', 'firebase'])
 
-  .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal) {
-    $scope.roomies = Roomies.all();
-    $scope.remove = function(roomie) {
-      Roomies.remove(roomie);
-    };
+.controller('AboutCtrl', function($scope){
+
+})
+
+.controller('DocumentCtrl', function($scope){
+
+})
+
+.controller('MoneyCtrl', function($scope){
+
+})
+
+.controller('SettingsCtrl', function($scope){
+
+})
+
+.controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
+
+  var currentUser = Storage.getData('user');
+  var tenants_ref = firebase.database().ref("Tenants/")
+  var roomies = $firebaseArray(tenants_ref);
+
+  //remove current user from room mate listing
+  roomies.$loaded().then(function() {
+    for(var i = 0; i < roomies.length; ++i){
+      if(roomies[i].email == currentUser.email){
+        roomies.splice(i, 1);
+      }
+    }
+    $scope.roomies = roomies;
+  });
 
   $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
           $scope.modalCtrl = modal;
+
       }, {
           scope: $scope,
           animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
@@ -15,12 +42,18 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   });
 
   $scope.openModal = function(roomie) {
-    $scope.modalData = {"name": roomie.name, "img":roomie.face};
+    $scope.roomie = roomie;
     $scope.modalCtrl.show();
   };
 
   $scope.hideModal = function(){
     $scope.modalCtrl.hide();
+  }
+
+  $scope.add_to_favorites = function(roomie){
+    console.log(roomie);
+    Tenants.add_to_favorites(currentUser, roomie);
+    $scope.hideModal();
   }
 
   // Cleanup the modal when we're done with it!
@@ -47,9 +80,16 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-  .controller('HousingCtrl', function($scope, $ionicModal) {
-    $ionicModal.fromTemplateUrl('templates/house-details.html', function(modal) {
+.controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
+
+    var currentUser = Storage.getData('user');
+    var property_ref = firebase.database().ref("Properties/");
+
+    $scope.houses = $firebaseArray(property_ref);
+
+    $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
             $scope.modalCtrl = modal;
+
         }, {
             scope: $scope,
             animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
@@ -57,82 +97,96 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           });
 
     $scope.openModal = function(house) {
-      $scope.modalData = house;
+      $scope.property = house;
       $scope.modalCtrl.show();
+
+    };
+
+    $scope.add_to_favorites = function(property){
+      Properties.add_to_favorites(property, currentUser.tenant_id);
+      $scope.hideModal();
     };
 
     $scope.hideModal = function(){
       $scope.modalCtrl.hide();
     }
 
-    $scope.propertiesData =  { "Properties" : {
-    "Property 1" : {
-      "street" : "961 Miller Ave",
-      "city" : "Iowa City",
-      "state" : "IA",
-      "zipCode" : "52246",
-      "amenities" : "laundry in-unit",
-      "bathrooms" : 1.5,
-      "bedrooms" : 2,
-      "description" : "large living room",
-      "lat" : 41.6480415,
-      "long" : -91.5491192,
-      "owner" : "Big Ten Iowa City",
-      "price" : 600,
-      "tenants" : 4,
-      "img" : "https://activerain-store.s3.amazonaws.com/image_store/uploads/8/6/1/0/1/ar125563090910168.jpg"
-    },
-    "Property 2" : {
-      "street" : "902 North Dodge Street",
-      "city" : "Iowa City",
-      "state" : "IA",
-      "zipCode" : "52245",
-      "amenities" : "free garage parking, free Mediacom cable and internet",
-      "bathrooms" : 2,
-      "bedrooms" : 3,
-      "description" : "spacious",
-      "lat" : 41.67185,
-      "long" : -91.524997,
-      "owner" : "Big Ten Iowa City",
-      "price" : 465,
-      "tenants" : "2",
-      "img" : null
-    },
-    "Property 3" : {
-      "street" : "226 S Governor St",
-      "city" : "Iowa City",
-      "state" : "IA",
-      "zipCode" : "52240",
-      "amenities" : "large closet in bedroom",
-      "bathrooms " : 1,
-      "bedrooms" : 1,
-      "description" : "large kitchen",
-      "lat" : 41.658617,
-      "long" : -91.522852,
-      "owner" : "Big Ten Iowa City",
-      "price" : 560,
-      "tenants " : 5,
-      "img" : null
-    },
-    "Property 4" : {
-      "street" : "902 N Dodge St",
-      "city" : "Iowa City",
-      "state" : "IA",
-      "zipCode" : "52245",
-      "amenities" : "2 free parking spots, off street parking available",
-      "bathrooms" : 2,
-      "bedrooms " : 4,
-      "description" : "No central air, has wall A/C unit",
-      "lat" : 41.67185,
-      "long" : -91.524997,
-      "owner" : "Big Ten Iowa City",
-      "price" : 400,
-      "tenants" : 3,
-      "img" : null
-    }}
+    $scope.openMap = function(house){
+      $scope.map = { center: { latitude: house.lat, longitude: house.long }, zoom: 8 };
+    };
+
+    $scope.showFilter=true;
+})
+
+.controller('FavoritesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
+
+  var currentUser = Storage.getData('user');
+  var previous_state;
+
+  var fav_prop_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_props/");
+  var fav_roomie_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_roomies/");
+  $scope.fav_props = $firebaseArray(fav_prop_ref);
+  $scope.fav_roomies = $firebaseArray(fav_roomie_ref);
+
+  $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+    viewData.enableBack = true;
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+
+      if(to.name == 'favs.homes' || to.name == 'favs.roomies'){
+        $scope.is_favorites = true;
+      }
+      else{
+        $scope.is_favorites = false;
+      }
+
+  });
+
+  $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
+          $scope.roomieDetailsCtrl = modal;
+
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+          focusFirstInput: false
+  });
+
+  $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
+          $scope.homeDetailsCtrl = modal;
+
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',//'slide-left-right', 'slide-in-up', 'slide-right-left'
+          focusFirstInput: false
+  });
+
+
+  $scope.viewHome = function(house) {
+    $scope.property = house;
+    $scope.homeDetailsCtrl.show();
   };
-  $scope.houses = $scope.propertiesData.Properties;
-  $scope.showFilter=true;
+
+  $scope.hideHome = function(){
+    $scope.homeDetailsCtrl.hide();
+  }
+
+  $scope.viewRoomie = function(roomie) {
+    $scope.roomie = roomie;
+    $scope.roomieDetailsCtrl.show();
+  };
+
+  $scope.hideRoomie = function(){
+    $scope.roomieDetailsCtrl.hide();
+  }
+
+  $scope.apply_for_prop = function(property){
+
+    console.log(currentUser.tenant_id + "is appling for a prop");
+    Properties.apply(currentUser, property)
+    $scope.hideHome();
+  }
+
 })
 
   .controller('MoneyCtrl', function() {
@@ -147,23 +201,35 @@ this.settings = {
   };
 })
 
-.controller('SideMenuCtrl', function($scope, $ionicSideMenuDelegate, $rootScope, Auth, $state, $firebaseObject) {
+.controller('MenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window, $cordovaFacebook) {
 
+  var currentUser = Storage.getData('user');
 
-  // synchronize the object with a three-way data binding
-  // click on `index.html` above to see it used in the DOM!
+  if (currentUser != null){
+    $scope.first_name = currentUser.first_name;
+    $scope.last_name = currentUser.last_name;
+    $scope.email = currentUser.email;
+    $scope.picture = currentUser.picture
+  }
 
   $scope.logout = function(){
-    Auth.$signOut().then(function(){
-        $state.go('login');
-    }, function(error){
+    if(Storage.getData('fbuser')){
+      $cordovaFacebook.logout();
+    }
+    else{
+        Auth.$signOut().then(function(){
+          Storage.clearData('user');
+          $window.location.reload(true)
+          $state.go('login');
+        }, function(error){
 
-    });
+        });
+    }
   }
-  $scope.profile_pic = "img/terry-crews.jpg";
+
 })
 
-.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup){
+.controller("SignUpCtrl", function ($scope, $ionicModal, Auth, $log,$ionicLoading, firebase, $firebaseArray, $ionicPopup, Tenants){
 
   $scope.createUser = function(signupForm){
 
@@ -173,7 +239,12 @@ this.settings = {
         var password = $scope.user.password;
         var first_name = $scope.user.firstName;
         var last_name = $scope.user.lastName;
-        var imageUrl = null;
+        var phone_number = $scope.user.phone_number;
+        var image_url = "";
+
+        if(image_url == ""){
+          image_url = "https://firebasestorage.googleapis.com/v0/b/home-ease.appspot.com/o/images%2Fdefault_avatar.png?alt=media&token=b03e9544-42fa-4029-8065-aa774ac0113e";
+        }
 
         console.log("form submitted");
 
@@ -184,14 +255,20 @@ this.settings = {
         Auth.$createUserWithEmailAndPassword(email, password)
             .then(function(newUser) {
               //$scope.message = "User created with uid: " + firebaseUser.uid;
-              firebase.database().ref('Users/' + newUser.uid).set({
-                firstname: first_name,
-                lastname: last_name,
+              firebase.database().ref('Tenants/' + newUser.uid).set({
+                first_name: first_name,
+                last_name: last_name,
                 email: email,
+<<<<<<< HEAD
               });;
               /*list.$add({ firstName: first_name, lastName: last_name, email: email}).then(function(ref) {
                 ref.key = firebaseUser.uid;
               });*/
+=======
+                picture : image_url,
+                phone_number: phone_number
+              });;
+>>>>>>> origin/flow_layout_change
               $scope.modal.remove();
               $scope.uploadModal.show();
             }).catch(function(error) {
@@ -214,10 +291,9 @@ this.settings = {
       $scope.modal.hide();
     }
 
-
 })
 
-.controller('UploadCtrl', function($scope, $rootScope, $cordovaImagePicker, $cordovaFile, $ionicPlatform, $q, $timeout){
+.controller('UploadCtrl', function($scope, $rootScope, $window, $cordovaImagePicker, $cordovaFile, $ionicPlatform, $q, $timeout){
 
   $scope.closeUpload = function(){
     $scope.uploadModal.hide();
@@ -307,6 +383,8 @@ this.settings = {
 
         var fileName, path;
 
+        //$cordovaImagePicker.requestReadPermission();
+
         $cordovaImagePicker.getPictures(options)
           .then(function (results) {
             console.log('Image URI: ' + results[0]);
@@ -343,22 +421,42 @@ this.settings = {
 
         }
 })
-.controller('LoginCtrl',  function ($scope, $ionicModal, $state, $log, Auth, $ionicPlatform,
-   $cordovaFacebook, $ionicLoading, $rootScope, $firebaseObject) {
+.controller('LoginCtrl',  function ($scope, $rootScope,$ionicModal, $state, $log, Auth, $ionicPlatform,
+   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject, Tenants) {
 
-  $scope.fbLogin = function () {
-    $cordovaFacebook.getLoginStatus();
-    $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-    .then(function(success) {
-      // { id: "634565435",
-      //   lastName: "bob"
-      //   ...
-      // }
-      alert(success.first_name);
-      $state.go('tab.roomies');
-    }, function (error) {
-      $log.log("fuck my life");
-    });
+     var user = {};
+
+     $scope.fbLogin = function () {
+
+      $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+      .then(function(success) {
+        console.log("facebook login success: " + success.authResponse.userID);
+      }, function (error) {
+        alert(error)
+      });
+
+      $cordovaFacebook.api('me?fields=id,first_name,last_name,email,picture.width(250)', ["public_profile"]).then(function(response){
+        console.log("hello from facebook")
+        if (response && !response.error) {
+          console.log(response.first_name);
+          user = {
+            'tenant_id': response.id,
+            'first_name': response.first_name,
+            'last_name': response.last_name,
+            'email': response.email,
+            'phone_number': "",
+            "picture": response.picture.data.url
+          }
+          Tenants.add_to_firebase(user);
+          Storage.setData('user', user);
+          Storage.setData('fbuser', true);
+          $state.go('menu.search.homes');
+
+        }, function(error){
+          alert(error);
+        }
+      });
+
     $scope.image_src = 'img/homeas.jpg';
   };
 
@@ -395,21 +493,22 @@ this.settings = {
           Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
           .then(function (authData) {
               console.log("Logged in as:" + authData.uid);
-              var ref = firebase.database().ref('/Users/' + authData.uid);
+              var id = authData.uid;
+              var ref = firebase.database().ref('/Tenants/' + authData.uid);
               var obj = $firebaseObject(ref);
               obj.$loaded().then(function() {
-                $rootScope.user = {
-                  'firstname': obj.firstname,
-                  'lastname': obj.lastname,
-                  'email': obj.email
+                var user = {
+                  'tenant_id': id,
+                  'first_name': obj.first_name,
+                  'last_name': obj.last_name,
+                  'email': obj.email,
+                  "phone_number": obj.phone_number,
+                  "picture": obj.picture
                 };
-                 // To iterate the key/value pairs of the object, use angular.forEach()
-                 /*angular.forEach(obj, function(value, key) {
-                    console.log(key, value);
-                 });*/
+                Storage.setData('user', user);
+                $ionicLoading.hide();
+                $state.go('menu.search.homes');
                });
-              $ionicLoading.hide();
-              $state.go('tab.roomies');
           }).catch(function (error) {
               alert("Authentication failed:" + error.message);
               $ionicLoading.hide();
