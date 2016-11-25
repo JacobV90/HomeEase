@@ -8,7 +8,6 @@ navigation history that also transitions its views in and out.
 
   <ion-pane ion-side-menu-content>
     <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view name="menu" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
@@ -18,12 +17,16 @@ navigation history that also transitions its views in and out.
     <ion-content >
       <ion-list>
 
-        <ion-item nav-clear menu-close >
-
-            <img ng-src="{{profile_pic}}">
-            <h2>{{first_name}} {{last_name}}</h2>
-            <h2>{{email}}</h2>
-
+        <ion-item nav-clear menu-close class=" item-profile ">
+          <div class = "frow column-start">
+            <div class="item-avatar">
+              <img ng-src="{{picture}}">
+            </div>
+            <div>
+              <h2>{{first_name}} {{last_name}}</h2>
+              <h2>{{email}}</h2>
+            </div>
+          </div>
         </ion-item>
 
         <ion-item nav-clear menu-close href="#/menu/search/homes">
@@ -43,17 +46,17 @@ navigation history that also transitions its views in and out.
             Home
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/money">
+        <ion-item nav-clear menu-close href="#/menu/money">
             <i class="icon ion-social-usd"></i>
             Money
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#">
+        <ion-item nav-clear menu-close href="#/menu/documents">
             <i class="icon ion-ios-paper"></i>
             Documents
         </ion-item>
 
-        <ion-item nav-clear menu-close>
+        <ion-item nav-clear menu-close href="#/menu/settings">
             <i class="icon ion-ios-gear-outline"></i>
             Settings
         </ion-item>
@@ -63,7 +66,7 @@ navigation history that also transitions its views in and out.
             Log Out
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/app/about">
+        <ion-item nav-clear menu-close href="#/menu/about">
             <i class="icon ion-ios-gear-outline"></i>
             About
         </ion-item>

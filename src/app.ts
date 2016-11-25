@@ -57,6 +57,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
   .state('menu.favorites', {
     url: '/favorites',
+    abstract: true,
     views:{
       'menu':{
         templateUrl: 'templates/favorites.html',
@@ -86,6 +87,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
   .state('menu.search', {
     url: '/search',
+    abstract: true,
     views:{
       'menu':{
         templateUrl: 'templates/search.html',
@@ -111,7 +113,47 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
         controller: 'RoomiesCtrl'
       }
     }
+  })
+
+  .state('menu.about', {
+    url: '/about',
+    views:{
+      'menu':{
+        templateUrl: 'templates/about.html',
+        controller: 'AboutCtrl'
+      }
+    }
+  })
+
+  .state('menu.documents', {
+    url: '/documents',
+    views:{
+      'menu':{
+        templateUrl: 'templates/documents.html',
+        controller: 'DocumentCtrl'
+      }
+    }
+  })
+
+  .state('menu.money', {
+    url: '/money',
+    views:{
+      'menu':{
+        templateUrl: 'templates/money.html',
+        controller: 'MoneyCtrl'
+      }
+    }
+  })
+  .state('menu.settings', {
+    url: '/settings',
+    views:{
+      'menu':{
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
+      }
+    }
   });
+
 
   $urlRouterProvider.otherwise('/login');
 

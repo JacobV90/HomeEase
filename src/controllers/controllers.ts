@@ -4,6 +4,18 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 })
 
+.controller('DocumentCtrl', function($scope){
+
+})
+
+.controller('MoneyCtrl', function($scope){
+
+})
+
+.controller('SettingsCtrl', function($scope){
+
+})
+
 .controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
 
   var currentUser = Storage.getData('user');
@@ -121,7 +133,6 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   });
 
   $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-      previous_state = from.name;
 
       if(to.name == 'favs.homes' || to.name == 'favs.roomies'){
         $scope.is_favorites = true;
@@ -169,10 +180,6 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     $scope.roomieDetailsCtrl.hide();
   }
 
-  $scope.goBack = function() {
-    $state.go("tab.housing");
-  };
-
   $scope.apply_for_prop = function(property){
 
     console.log(currentUser.tenant_id + "is appling for a prop");
@@ -194,7 +201,7 @@ this.settings = {
   };
 })
 
-.controller('MenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window) {
+.controller('MenuCtrl', function($scope, $rootScope, Auth, $state, Storage, $window, $cordovaFacebook) {
 
   var currentUser = Storage.getData('user');
 
@@ -202,21 +209,22 @@ this.settings = {
     $scope.first_name = currentUser.first_name;
     $scope.last_name = currentUser.last_name;
     $scope.email = currentUser.email;
+    $scope.picture = currentUser.picture
   }
 
   $scope.logout = function(){
-    Auth.$signOut().then(function(){
-        Storage.clearData('user');
-        $window.location.reload(true)
-        $state.go('login');
-    }, function(error){
+    if(Storage.getData('fbuser')){
+      $cordovaFacebook.logout();
+    }
+    else{
+        Auth.$signOut().then(function(){
+          Storage.clearData('user');
+          $window.location.reload(true)
+          $state.go('login');
+        }, function(error){
 
-    });
-  }
-  $scope.profile_pic = $rootScope.profile_pic;
-
-  $scope.go_to_favs = function(){
-    $state.go('favs.homes');
+        });
+    }
   }
 
 })
@@ -251,7 +259,7 @@ this.settings = {
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
-                profile_pic : image_url,
+                picture : image_url,
                 phone_number: phone_number
               });;
               $scope.modal.remove();
@@ -409,6 +417,8 @@ this.settings = {
 .controller('LoginCtrl',  function ($scope, $rootScope,$ionicModal, $state, $log, Auth, $ionicPlatform,
    $cordovaFacebook, $ionicLoading, Storage, $firebaseObject, Tenants) {
 
+     var user = {};
+
      $scope.fbLogin = function () {
 
       $cordovaFacebook.login(["public_profile", "email", "user_friends"])
@@ -418,27 +428,27 @@ this.settings = {
         alert(error)
       });
 
-      $cordovaFacebook.api('me?fields=id,first_name,last_name,picture,email', ["public_profile"]).then(function(response){
+      $cordovaFacebook.api('me?fields=id,first_name,last_name,email,picture.width(250)', ["public_profile"]).then(function(response){
         console.log("hello from facebook")
         if (response && !response.error) {
           console.log(response.first_name);
-          var user = {
+          user = {
             'tenant_id': response.id,
             'first_name': response.first_name,
             'last_name': response.last_name,
             'email': response.email,
             'phone_number': "",
-            'picture': response.picture.data.url
+            "picture": response.picture.data.url
           }
-          console.log(JSON.stringify(user));
           Tenants.add_to_firebase(user);
           Storage.setData('user', user);
-          $rootScope.profile_pic = response.picture.data.url;
-          $state.go('tab.roomies');
+          Storage.setData('fbuser', true);
+          $state.go('menu.search.homes');
+
+        }, function(error){
+          alert(error);
         }
-    }, function(error){
-      alert(error);
-    });
+      });
 
     $scope.image_src = 'img/homeas.jpg';
   };
