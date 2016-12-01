@@ -16,7 +16,63 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 })
 
-.controller('RoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
+.controller('MapCtrl', function($scope, $state, $stateParams, $window, $cordovaGeolocation, $ionicLoading){
+
+    var properties = $stateParams.fav_props;
+    var bounds = new google.maps.LatLngBounds();
+    var marker;
+    var markers = [];
+
+    $ionicLoading.show({
+        template: 'Finding your favorite locations'
+    });
+
+    $scope.goBack = function(){
+      $state.go('menu.favorites.homes');
+    }
+
+    console.log(properties.length);
+
+    for(var i = 0; i < properties.length; ++i){
+      var prop = properties[i];
+      markers.push([prop.street, Number(prop.lat), Number(prop.long)])
+    }
+
+    console.log(markers.length)
+
+    var mapOptions = {
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    $scope.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+    // Loop through our array of markers & place each one on the map
+    for( i = 0; i < markers.length; i++ ) {
+        console.log(markers[i][1] + " " +  markers[i][2])
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: $scope.map,
+            title: markers[i][0]
+        });
+
+        // Automatically center the map fitting all markers on the screen
+        $scope.map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+  /*  var boundsListener = google.maps.event.addListener(($scope.map), 'bounds_changed', function(event) {
+        this.setZoom(14);
+        google.maps.event.removeListener(boundsListener);
+    });*/
+
+    $ionicLoading.hide();
+
+})
+
+.controller('SearchRoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
 
   var currentUser = Storage.getData('user');
   var tenants_ref = firebase.database().ref("Tenants/")
@@ -32,7 +88,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     $scope.roomies = roomies;
   });
 
-  $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
+  $ionicModal.fromTemplateUrl('templates/search-roomies-details.html', function(modal) {
           $scope.modalCtrl = modal;
 
       }, {
@@ -80,14 +136,14 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         };
   })
 
-.controller('HousingCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
+.controller('SearchHomesCtrl', function($scope, $ionicModal, $firebaseArray, $cordovaGeolocation, $state, Storage, Properties) {
 
     var currentUser = Storage.getData('user');
     var property_ref = firebase.database().ref("Properties/");
 
     $scope.houses = $firebaseArray(property_ref);
 
-    $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
+    $ionicModal.fromTemplateUrl('templates/search-home-details.html', function(modal) {
             $scope.modalCtrl = modal;
 
         }, {
@@ -118,14 +174,10 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     $scope.showFilter=true;
 })
 
-.controller('FavoritesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
-
+.controller('FavoriteRoomiesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties){
   var currentUser = Storage.getData('user');
-  var previous_state;
-
-  var fav_prop_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_props/");
   var fav_roomie_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_roomies/");
-  $scope.fav_props = $firebaseArray(fav_prop_ref);
+
   $scope.fav_roomies = $firebaseArray(fav_roomie_ref);
 
   $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
@@ -134,7 +186,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
 
-      if(to.name == 'favs.homes' || to.name == 'favs.roomies'){
+      if(to.name == 'menu.favorites.roomies'){
         $scope.is_favorites = true;
       }
       else{
@@ -143,7 +195,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   });
 
-  $ionicModal.fromTemplateUrl('templates/roomie-details.html', function(modal) {
+  $ionicModal.fromTemplateUrl('templates/favorite-roomies-details.html', function(modal) {
           $scope.roomieDetailsCtrl = modal;
 
       }, {
@@ -152,7 +204,40 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           focusFirstInput: false
   });
 
-  $ionicModal.fromTemplateUrl('templates/home-details.html', function(modal) {
+
+  $scope.viewRoomie = function(roomie) {
+      $scope.roomie = roomie;
+      $scope.roomieDetailsCtrl.show();
+  };
+
+  $scope.hideRoomie = function(){
+      $scope.roomieDetailsCtrl.hide();
+  }
+
+})
+.controller('FavoriteHomesCtrl', function($scope, $rootScope, Storage, $firebaseArray, $ionicModal, $location, $state, Properties) {
+
+  var currentUser = Storage.getData('user');
+  var fav_prop_ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+"/fav_props/");
+
+  $scope.fav_props = $firebaseArray(fav_prop_ref);
+
+  $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+    viewData.enableBack = true;
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+
+      if(to.name == 'menu.favorites.homes'){
+        $scope.is_favorites = true;
+      }
+      else{
+        $scope.is_favorites = false;
+      }
+
+  });
+
+  $ionicModal.fromTemplateUrl('templates/favorite-home-details.html', function(modal) {
           $scope.homeDetailsCtrl = modal;
 
       }, {
@@ -161,6 +246,14 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
           focusFirstInput: false
   });
 
+  $scope.viewMap = function(fav_props) {
+    console.log("view map");
+    $state.go('map',{fav_props: fav_props});
+  };
+
+  $scope.hideMap = function(){
+    $scope.homesMapCtrl.hide();
+  }
 
   $scope.viewHome = function(house) {
     $scope.property = house;
@@ -169,15 +262,6 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   $scope.hideHome = function(){
     $scope.homeDetailsCtrl.hide();
-  }
-
-  $scope.viewRoomie = function(roomie) {
-    $scope.roomie = roomie;
-    $scope.roomieDetailsCtrl.show();
-  };
-
-  $scope.hideRoomie = function(){
-    $scope.roomieDetailsCtrl.hide();
   }
 
   $scope.apply_for_prop = function(property){
@@ -189,15 +273,9 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 })
 
-  .controller('MoneyCtrl', function() {
+.controller('MoneyCtrl', function() {
   this.settings = {
     enableFriends: true
-  };
-})
-
-.controller('InfoCtrl', function() {
-this.settings = {
-  enableFriends: true
   };
 })
 
@@ -259,16 +337,9 @@ this.settings = {
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
-<<<<<<< HEAD
-              });;
-              /*list.$add({ firstName: first_name, lastName: last_name, email: email}).then(function(ref) {
-                ref.key = firebaseUser.uid;
-              });*/
-=======
                 picture : image_url,
                 phone_number: phone_number
-              });;
->>>>>>> origin/flow_layout_change
+              });
               $scope.modal.remove();
               $scope.uploadModal.show();
             }).catch(function(error) {
@@ -452,18 +523,12 @@ this.settings = {
           Storage.setData('fbuser', true);
           $state.go('menu.search.homes');
 
-        }, function(error){
-          alert(error);
         }
+      }, function(error){
+          alert(error);
       });
 
     $scope.image_src = 'img/homeas.jpg';
-  };
-
-  $scope.signup_img = 'img/modern_living.jpg';
-
-  $scope.gotoMain = function() {
-    $state.go("tab.roomies");
   };
 
   $ionicModal.fromTemplateUrl('templates/signup.html', {
@@ -487,9 +552,11 @@ this.settings = {
   $scope.signIn = function () {
 
       if ($scope.email && $scope.pwdForLogin) {
+
           $ionicLoading.show({
               template: 'Signing In...'
           });
+
           Auth.$signInWithEmailAndPassword($scope.email,$scope.pwdForLogin)
           .then(function (authData) {
               console.log("Logged in as:" + authData.uid);
@@ -513,7 +580,9 @@ this.settings = {
               alert("Authentication failed:" + error.message);
               $ionicLoading.hide();
           });
-      } else
+      } else{
           alert("Please enter email and password both");
-  }
-});
+      }
+    }
+
+  });

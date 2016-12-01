@@ -3,11 +3,11 @@
 
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 
-      </ion-nav-buttons>
+ </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="roomie in fav_roomies" type="item-text-wrap" ng-click="viewRoomie(roomie)">
-        <img ng-src="{{roomie.face}}">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" collection-repeat="roomie in fav_roomies" type="item-text-wrap" ng-click="viewRoomie(roomie)">
+        <img ng-src="{{roomie.picture}}">
         <h2>{{roomie.first_name}} {{roomie.last_name}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
         <ion-option-button class="button-assertive" ng-click="remove(chat)">
@@ -16,12 +16,5 @@
       </ion-item>
     </ion-list>
   </ion-content>
-  <div class="tabs tabs-icon-only">
-        <a nav-clear class="tab-item disable-user-behavior" title="Home" nav-clear ui-sref="menu.favorite-homes">
-          <i class="icon ion-home"></i><span class="tab-title ng-binding" ng-bind-html="title"></span>
-        </a>
-        <a nav-clear class="tab-item disable-user-behavior active" title="Chat" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline" ui-sref="menu.favorite-roomies">
-          <i class="icon ion-chatbubbles"></i><span class="tab-title ng-binding" ng-bind-html="title"></span>
-        </a>
-  </div>
+
 </ion-view>

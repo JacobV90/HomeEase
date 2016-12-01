@@ -23,6 +23,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 $green: #9BC995;
 
+.scroll {
+    height: 100%;
+}
+
+#map_canvas {
+    width: 100%;
+    height: 100%;
+}
+
 .background{
   background-image: url('../img/homeas.jpg');
   background-repeat: no-repeat;

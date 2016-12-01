@@ -89,8 +89,8 @@ angular.module('app.services', ['firebase'])
           owner: property.owner,
           zipcode: property.zipcode,
           prop_id: property.prop_id,
-          lat: "",
-          long: "",
+          lat: property.lat,
+          long: property.long,
       });
     },
     apply: function(tenant, property){
@@ -100,7 +100,8 @@ angular.module('app.services', ['firebase'])
         first_name: tenant.first_name,
         last_name: tenant.last_name,
         email: tenant.email,
-        phone_number: tenant.phone_number
+        phone_number: tenant.phone_number,
+        picture: tenant.picture
       });
     }
   }
@@ -114,7 +115,8 @@ angular.module('app.services', ['firebase'])
             first_name: roomie.first_name,
             last_name: roomie.last_name,
             email: roomie.email,
-            phone_number: roomie.phone_number
+            phone_number: roomie.phone_number,
+            picture: roomie.picture
         });
       },
       add_to_firebase: function(tenant){

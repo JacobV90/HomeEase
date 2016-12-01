@@ -2,7 +2,7 @@
 
 var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ngCordova','firebase'])
 
-.run(function($ionicPlatform, firebase) {
+.run(function($ionicPlatform, firebase, $window) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -12,10 +12,21 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
     }
     if (window.StatusBar) {
-      window.StatusBar.styleLightContent();
+      window.StatusBar.styleDefault();
     }
 
+      /*if($window.plugin){
+      var div = $window.document.getElementById("map_canvas");
+      var map = $window.plugin.google.maps.Map.getMap(div);
+
+      map.addEventListener($window.plugin.google.maps.event.MAP_READY, onMapReady);
+    }*/
+
   });
+
+  function onMapReady(){
+
+  }
 
 })
 
@@ -39,6 +50,15 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
+  })
+
+  .state('map', {
+    url: '/map',
+    templateUrl: 'templates/map.html',
+    controller: 'MapCtrl',
+    params: {
+      fav_props: {}
+    }
   })
 
   .state('menu', {
@@ -70,7 +90,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     views: {
       'favorite-homes': {
         templateUrl: 'templates/favorite-homes.html',
-        controller: 'FavoritesCtrl'
+        controller: 'FavoriteHomesCtrl'
       }
     }
   })
@@ -80,7 +100,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     views: {
       'favorite-roomies': {
         templateUrl: 'templates/favorite-roomies.html',
-        controller: 'FavoritesCtrl'
+        controller: 'FavoriteRoomiesCtrl'
       }
     }
   })
@@ -100,7 +120,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     views:{
       'search-homes':{
         templateUrl: 'templates/search-homes.html',
-        controller: 'HousingCtrl'
+        controller: 'SearchHomesCtrl'
       }
     }
   })
@@ -110,7 +130,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     views:{
       'search-roomies':{
         templateUrl: 'templates/search-roomies.html',
-        controller: 'RoomiesCtrl'
+        controller: 'SearchRoomiesCtrl'
       }
     }
   })
