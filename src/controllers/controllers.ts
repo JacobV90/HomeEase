@@ -12,8 +12,90 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 })
 
-.controller('SettingsCtrl', function($scope){
+.controller('ChatCtrl', function ($scope, Chats, $state, Storage) {
+    //console.log("Chat Controller initialized");
 
+    var currentUser = Storage.getData('user');
+
+    $scope.IM = {
+        textMessage: ""
+    };
+
+    $scope.messages = Chats.selectMessages($state.params.roomId);
+
+    console.log($scope.messages)
+
+    $scope.sendMessage = function (msg) {
+        console.log(msg);
+        Chats.send(currentUser.first_name, msg);
+        $scope.IM.textMessage = "";
+    }
+
+    $scope.remove = function (chat) {
+        Chats.remove(chat);
+    }
+})
+
+.controller('ChatroomsCtrl', function ($scope, Rooms, Chats, $state, Storage, $firebaseArray) {
+    //console.log("Rooms Controller initialized");
+    $scope.rooms = [];
+
+    var currentUser = Storage.getData('user');
+
+    //var ref = firebase.database().ref("Tenants/"+currentUser.tenant_id+'/chatrooms');
+
+    var ref = firebase.database().ref('/');
+    ref.child('Tenants').child(currentUser.tenant_id).child('chatrooms').on('value', function(keys){
+      var index = 0;
+      keys.forEach(function(keySnapshot) {
+        ref.child('Chatrooms').child(keySnapshot.val().id).once('value', function(postSnapshot) {
+          var chat = {
+            room: postSnapshot.val(),
+            id: postSnapshot.key
+          }
+          $scope.rooms[index++] = chat;
+          console.log(chat);
+        });
+      })
+      $scope.$broadcast('chatrooms_ready');
+    });
+
+      /*user.$loaded().then(function(){
+        var chatrooms = user.$getRecord("chatrooms");
+        console.log(chatrooms);
+        angular.forEach(chatrooms, function(room){
+          if(typeof room === 'object' && room != null){
+              console.log(room.id);
+              user_rooms.push(room.id);
+          }
+        });
+      })*/
+
+    $scope.openChatRoom = function (roomId) {
+      console.log(roomId);
+      $state.go('menu.messages', {
+            roomId: roomId
+      });
+    }
+})
+
+.controller('ProfileCtrl', function($scope, Storage){
+  $scope.user = Storage.getData('user');
+})
+
+.controller("MainHomeCtrl", function($scope, Storage){
+  $scope.property = {};
+  var user = Storage.getData('user');
+  if(user.home == undefined){
+    $scope.home_status = false;
+  }
+  else{
+    $scope.home_status = true;
+  }
+})
+
+.controller("MainRoomiesCtrl", function($scope){
+  $scope.roomies = {};
 })
 
 .controller('MapCtrl', function($scope, $state, $stateParams, $window, $cordovaGeolocation, $ionicLoading){
@@ -72,11 +154,12 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
 })
 
-.controller('SearchRoomiesCtrl', function($scope, Roomies, $ionicModal, $firebaseArray, Tenants, Storage) {
+.controller('SearchRoomiesCtrl', function($scope, $ionicModal, $firebaseArray, Tenants, $state, Storage, $ionicPopup, Chats, Rooms) {
 
   var currentUser = Storage.getData('user');
   var tenants_ref = firebase.database().ref("Tenants/")
   var roomies = $firebaseArray(tenants_ref);
+  $scope.roomies = roomies;
 
   //remove current user from room mate listing
   roomies.$loaded().then(function() {
@@ -85,7 +168,6 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         roomies.splice(i, 1);
       }
     }
-    $scope.roomies = roomies;
   });
 
   $ionicModal.fromTemplateUrl('templates/search-roomies-details.html', function(modal) {
@@ -99,6 +181,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
 
   $scope.openModal = function(roomie) {
     $scope.roomie = roomie;
+    console.log($scope.roomie.tenant_id);
     $scope.modalCtrl.show();
   };
 
@@ -110,6 +193,44 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
     console.log(roomie);
     Tenants.add_to_favorites(currentUser, roomie);
     $scope.hideModal();
+  }
+
+  $scope.openChat = function(tenant){
+    $scope.data = {}
+
+    var myPopup = $ionicPopup.show({
+      template: '<textarea class="textareas" ng-model="data.message" placeholder="What do you want to say?"  autofocus ></textarea>',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: '<b>Send</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.data.message) {
+              e.preventDefault();
+            } else {
+              console.log("messaging "+ tenant.tenant_id)
+              var d = new Date();
+              var message = {
+                from: currentUser.first_name,
+                to: tenant.first_name,
+                text: $scope.data.message,
+                createdAt: d.getTime()
+              };
+              var chatroom = {
+                messages: [message],
+                members: [tenant, currentUser]
+              }
+              //console.log("chat room about to be added" + JSON.stringify(chatroom));
+              Rooms.add(chatroom);
+              //Chats.send(currentUser, $scope.data.message);
+              return $scope.data.message;
+            }
+          }
+        }
+      ]
+    });
   }
 
   // Cleanup the modal when we're done with it!
@@ -291,14 +412,17 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
   }
 
   $scope.logout = function(){
+
     if(Storage.getData('fbuser')){
+      Storage.clearData('fbuser');
+      Storage.clearData('user');
       $cordovaFacebook.logout();
     }
     else{
         Auth.$signOut().then(function(){
           Storage.clearData('user');
           $window.location.reload(true)
-          $state.go('login');
+          $state.go('login', {reload: true});
         }, function(error){
 
         });
@@ -493,7 +617,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
         }
 })
 .controller('LoginCtrl',  function ($scope, $rootScope,$ionicModal, $state, $log, Auth, $ionicPlatform,
-   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject, Tenants) {
+   $cordovaFacebook, $ionicLoading, Storage, $firebaseObject, Tenants, $window) {
 
      var user = {};
 
@@ -516,7 +640,7 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
             'last_name': response.last_name,
             'email': response.email,
             'phone_number': "",
-            "picture": response.picture.data.url
+            "picture": response.picture.data.url,
           }
           Tenants.add_to_firebase(user);
           Storage.setData('user', user);
@@ -570,7 +694,8 @@ angular.module('app.controllers', [ 'ionic', 'firebase'])
                   'last_name': obj.last_name,
                   'email': obj.email,
                   "phone_number": obj.phone_number,
-                  "picture": obj.picture
+                  "picture": obj.picture,
+                  "home": obj.home
                 };
                 Storage.setData('user', user);
                 $ionicLoading.hide();

@@ -30,6 +30,21 @@ navigation history that also transitions its views in and out.
           </div>
         </ion-item>
 
+        <ion-item nav-clear menu-close href="#/menu/profile">
+            <i class="icon ion-person"></i>
+            Profile
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/menu/chatrooms">
+            <i class="icon ion-chatboxes"></i>
+            Messages
+        </ion-item>
+
+        <ion-item nav-clear menu-close href="#/menu/main/home">
+            <i class="icon ion-home"></i>
+            Home
+        </ion-item>
+
         <ion-item nav-clear menu-close href="#/menu/search/homes">
             <i class="icon ion-ios-paper"></i>
             Search
@@ -42,11 +57,6 @@ navigation history that also transitions its views in and out.
           </span>
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#">
-            <i class="icon ion-home"></i>
-            Home
-        </ion-item>
-
         <ion-item nav-clear menu-close href="#/menu/money">
             <i class="icon ion-social-usd"></i>
             Money
@@ -57,12 +67,7 @@ navigation history that also transitions its views in and out.
             Documents
         </ion-item>
 
-        <ion-item nav-clear menu-close href="#/menu/settings">
-            <i class="icon ion-ios-gear-outline"></i>
-            Settings
-        </ion-item>
-
-        <ion-item nav-clear menu-close>
+        <ion-item nav-clear menu-close ng-click='logout()'>
             <i class="icon ion-log-out"></i>
             Log Out
         </ion-item>

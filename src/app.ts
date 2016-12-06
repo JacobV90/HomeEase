@@ -24,9 +24,7 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
 
   });
 
-  function onMapReady(){
 
-  }
 
 })
 
@@ -73,6 +71,36 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
           return Auth.$requireSignIn();
         }]
       }
+  })
+
+  .state('menu.main', {
+    url: '/main',
+    abstract: true,
+    views:{
+      'menu':{
+        templateUrl: 'templates/main.html'
+      }
+    }
+  })
+
+  .state('menu.main.home',{
+    url: '/home',
+    views: {
+      'main-home': {
+        templateUrl: 'templates/main-home.html',
+        controller: 'MainHomeCtrl'
+      }
+    }
+  })
+
+  .state('menu.main.roomies',{
+    url: '/roomies',
+    views: {
+      'main-roomies': {
+        templateUrl: 'templates/main-roomies.html',
+        controller: 'MainRoomiesCtrl'
+      }
+    }
   })
 
   .state('menu.favorites', {
@@ -135,6 +163,26 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
     }
   })
 
+  .state('menu.chatrooms', {
+        url: '/chatrooms',
+        views: {
+            'menu': {
+                templateUrl: 'templates/chatrooms.html',
+                controller: 'ChatroomsCtrl'
+            }
+        }
+    })
+
+  .state('menu.messages', {
+        url: '/chatrooms/:roomId',
+        views: {
+          'menu':{
+            templateUrl: 'templates/chatroom-messages.html',
+            controller: 'ChatCtrl'
+          }
+        }
+  })
+
   .state('menu.about', {
     url: '/about',
     views:{
@@ -164,12 +212,13 @@ var app = angular.module('app', ['ionic', 'app.controllers', 'app.services', 'ng
       }
     }
   })
-  .state('menu.settings', {
-    url: '/settings',
+
+  .state('menu.profile', {
+    url: '/profile',
     views:{
       'menu':{
-        templateUrl: 'templates/settings.html',
-        controller: 'SettingsCtrl'
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
       }
     }
   });
